@@ -1,10 +1,21 @@
 import { BookmarkIcon } from "@radix-ui/react-icons";
 import { Button } from "@radix-ui/themes";
 import Konva from "konva";
-// import { BubbleSort } from "./lib/core/algorithms";
-import { SelectionSort } from "./lib/core/algorithms/selection-sort";
+import { useEffect } from "react";
+import { algorithms } from "./lib/core/algorithms";
 
 export default function App() {
+  useEffect(() => {
+    var stage = new Konva.Stage({
+      container: "container",
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+
+    var layer = new Konva.Layer();
+    stage.add(layer);
+    algorithms(layer).bubbleSort.run();
+  }, []);
   return (
     <div className="flex justify-center items-center h-screen">
       <Button
@@ -19,8 +30,6 @@ export default function App() {
 
             var layer = new Konva.Layer();
             stage.add(layer);
-
-            new SelectionSort([3, 1, 0, 10, 6, 1, 3], layer).run();
           }
         }}
       >

@@ -1,7 +1,6 @@
-import { IBaseAlgorithm } from "../base-algorithm";
-import { SortingAlgorithm } from "../sorting-algorithm";
+import { ArrayAlgorithm } from "../array-algorithm";
 
-export class BubbleSort extends SortingAlgorithm implements IBaseAlgorithm {
+export class BubbleSort extends ArrayAlgorithm {
   async run() {
     let n = this.data.length;
     for (let i = 0; i < n - 1; i++) {

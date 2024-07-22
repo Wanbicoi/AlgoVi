@@ -1,7 +1,7 @@
 import { IBaseAlgorithm } from "../base-algorithm";
-import { SortingAlgorithm } from "../sorting-algorithm";
+import { ArrayAlgorithm } from "../array-algorithm";
 
-export class SelectionSort extends SortingAlgorithm implements IBaseAlgorithm {
+export class SelectionSort extends ArrayAlgorithm implements IBaseAlgorithm {
   async run() {
     let n = this.data.length;
 
