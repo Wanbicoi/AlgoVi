@@ -1,6 +1,16 @@
 import Konva from "konva";
 import { BubbleSort } from "./bubble-sort";
-export const algorithms = (layer: Konva.Layer) => {
+import { BaseAlgorithm } from "../base-algorithm";
+export type AlgorithmType = {
+  [key: string]: BaseAlgorithm<any>;
+};
+
+declare global {
+  interface Window {
+    algorithms?: AlgorithmType;
+  }
+}
+export const algorithms = (layer: Konva.Layer): AlgorithmType => {
   return {
     bubbleSort: new BubbleSort(layer),
   };

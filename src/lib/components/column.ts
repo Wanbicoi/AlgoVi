@@ -1,31 +1,12 @@
 import Konva from "konva";
-import { BaseShape, ShapeConfig } from "./base-shape";
-
-interface ColumnConfig extends ShapeConfig {
-  width?: number;
-  height?: number;
-}
+import { BaseShape } from "./base-shape";
 
 export class Column extends BaseShape {
-  protected config: ColumnConfig;
-
-  constructor(config: ColumnConfig) {
-    super(config);
-    this.config = {
-      ...config,
-      width: 100,
-      height: 50,
-    };
-  }
-
-  protected initShape(): void {
-    this.shape = new Konva.Rect({
-      width: this.config.width,
-      height: this.config.height,
-      fill: this.config.fill,
-      stroke: this.config.stroke,
-      strokeWidth: this.config.strokeWidth,
+  protected initShape(value: number): Konva.Shape {
+    return new Konva.Rect({
+      ...BaseShape.BASE_SHAPE_CONFIG,
+      height: value * BaseShape.BASE_UNIT,
+      width: BaseShape.BASE_UNIT,
     });
-    this.group.add(this.shape);
   }
 }

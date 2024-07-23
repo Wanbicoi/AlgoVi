@@ -1,55 +1,37 @@
 import Konva from "konva";
 
-export interface ShapeConfig {
-  x?: number;
-  y?: number;
-  text?: string;
-  fontSize?: number;
-  fontFamily?: string;
-  fill?: string;
-  stroke?: string;
-  strokeWidth?: number;
-  textColor?: string;
-}
-
 export abstract class BaseShape {
-  protected config: ShapeConfig;
-  protected shape!: Konva.Shape;
+  static BASE_UNIT = 40;
+  static BASE_SHAPE_CONFIG = {
+    fontSize: 18,
+    fill: "transparent",
+    stroke: "black",
+    strokeWidth: 1,
+    textColor: "black",
+    cornerRadius: 5,
+  };
+
+  shape!: Konva.Shape;
   protected textNode: Konva.Text;
   protected group: Konva.Group;
 
-  constructor(config: ShapeConfig) {
-    this.config = {
-      x: 0,
-      y: 0,
-      text: "",
-      fontSize: 18,
-      fontFamily: "Arial",
-      fill: "lightgray",
-      stroke: "black",
-      strokeWidth: 2,
-      textColor: "black",
-      ...config,
-    };
-
-    this.group = new Konva.Group({
-      x: this.config.x,
-      y: this.config.y,
-    });
-
-    this.initShape();
+  constructor(value: number) {
+    this.group = new Konva.Group();
+    this.shape = this.initShape(value);
+    this.group.add(this.shape);
     this.textNode = new Konva.Text({
-      text: this.config.text,
-      fontSize: this.config.fontSize,
-      fontFamily: this.config.fontFamily,
-      fill: this.config.textColor,
-      align: "center",
+      ...BaseShape.BASE_SHAPE_CONFIG,
       verticalAlign: "middle",
+      align: "center",
+      fill: "black",
+      text: value.toString(),
+      width: BaseShape.BASE_UNIT,
+      height: BaseShape.BASE_UNIT,
     });
     this.group.add(this.textNode);
   }
 
-  protected abstract initShape(): void;
+  protected abstract initShape(value: number): Konva.Shape;
 
   addTo(layer: Konva.Layer): void {
     layer.add(this.group);
@@ -63,7 +45,19 @@ export abstract class BaseShape {
     this.textNode.text(value.toString());
   }
 
-  position(x: number, y: number): void {
+  setAttrs(config: Konva.ShapeConfig) {
+    this.shape.setAttrs(config);
+  }
+
+  get render(): Konva.Group {
+    return this.group;
+  }
+
+  setPosition(x: number, y: number): void {
     this.group.position({ x, y });
+  }
+
+  get position(): { x: number; y: number } {
+    return { x: this.group.position().x, y: this.group.position().y };
   }
 }

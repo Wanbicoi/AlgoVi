@@ -4,6 +4,7 @@ import {
   BaseOperation,
   OperationArgumentType,
 } from "./base-operation";
+import { ReactNode } from "react";
 
 export abstract class BaseAlgorithm<T> {
   private operations: { [key in OperationType]?: BaseOperation<T> };
@@ -30,6 +31,13 @@ export abstract class BaseAlgorithm<T> {
     if (operation) {
       operation.run(this as unknown as T, arg);
     }
+  }
+  public renderOperations(): ReactNode {
+    return Object.keys(this.operations).map((key) =>
+      this.operations[key as keyof typeof this.operations]!.render(
+        this as unknown as T,
+      ),
+    );
   }
 
   abstract run(): void;
