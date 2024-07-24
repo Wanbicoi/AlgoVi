@@ -19,14 +19,14 @@ export default function App() {
   return (
     <div className="h-screen">
       <Flex mb={"3"}>
-        {window.algorithms && window.algorithms.bubbleSort.renderOperations()}
+        {window.algorithms && window.algorithms.linearSearch.renderOperations()}
       </Flex>
       <Button
         variant="solid"
         onClick={() => {
           if (window.algorithms) {
-            window.algorithms.bubbleSort.executeOperation("Init", [3, 2, 1]);
-            window.algorithms.bubbleSort.run();
+            window.algorithms.linearSearch.executeOperation("Init", [3, 2, 1]);
+            window.algorithms.linearSearch.run();
           }
         }}
       >

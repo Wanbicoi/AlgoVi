@@ -40,10 +40,13 @@ export abstract class BaseAlgorithm<T> {
     );
   }
 
-  abstract run(): void;
+  abstract run(param?: number): void;
 
   abstract highlight(index: number): void;
   abstract unhighlight(index: number): void;
 
   abstract swap(firstIndex: number, secondIndex: number): void;
+
+  abstract pause(): void;
+  abstract resume(): void;
 }

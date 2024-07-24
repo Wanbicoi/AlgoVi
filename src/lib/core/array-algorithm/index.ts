@@ -1,11 +1,18 @@
 import Konva from "konva";
 import { BaseShape, Circle, Column } from "../../components";
 import { BaseAlgorithm } from "../base-algorithm";
-import { InsertOperation, UpdateOperation, InitOperation } from "./operations";
+import {
+  InsertOperation,
+  UpdateOperation,
+  InitOperation,
+  DeleteOperation,
+} from "./operations";
 
 export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
   data: BaseShape[];
   type: "circle" | "column";
+  private paused: boolean = false;
+  private resumeSignal: ((value?: unknown) => void) | null = null;
   constructor(layer: Konva.Layer, type: "circle" | "column" = "column") {
     super(layer);
     this.data = [];
@@ -13,6 +20,7 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
     this.registerOperation("Insert", new InsertOperation());
     this.registerOperation("Update", new UpdateOperation());
     this.registerOperation("Init", new InitOperation());
+    this.registerOperation("Delete", new DeleteOperation());
   }
 
   addData(value: number) {
@@ -29,6 +37,15 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
       return newColumn;
     });
     this.data.forEach((column) => column.addTo(this.layer));
+  }
+  delete(value: number) {
+    const index = this.data.findIndex((item) => item.value == value);
+    if (index !== -1) {
+      this.data.splice(index, 1);
+      this.data.forEach((column, i) => {
+        column.setPosition(i * (BaseShape.BASE_UNIT + 10), 0);
+      });
+    }
   }
 
   async swap(firstIndex: number, secondIndex: number) {
@@ -64,5 +81,25 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
   async unhighlight(index: number) {
     this.data[index].setAttrs(BaseShape.BASE_SHAPE_CONFIG);
     await this.sleep();
+  }
+
+  pause() {
+    this.paused = true;
+  }
+
+  resume() {
+    this.paused = false;
+    if (this.resumeSignal) {
+      this.resumeSignal();
+      this.resumeSignal = null;
+    }
+  }
+
+  protected async checkPause() {
+    if (this.paused) {
+      await new Promise((resolve) => {
+        this.resumeSignal = resolve;
+      });
+    }
   }
 }

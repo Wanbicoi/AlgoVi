@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export type OperationType = "Insert" | "Update" | "Init" | "Search";
+export type OperationType = "Insert" | "Update" | "Init" | "Delete";
 export type OperationArgumentType = number | number[] | (number | number[])[];
 
 export abstract class BaseOperation<T> {
