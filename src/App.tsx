@@ -1,7 +1,7 @@
 import { BookmarkIcon } from "@radix-ui/react-icons";
-import { Button, Flex } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import Konva from "konva";
-import { useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { algorithms } from "./lib/core/algorithms";
 
 export default function App() {
@@ -15,17 +15,16 @@ export default function App() {
     var layer = new Konva.Layer();
     stage.add(layer);
     window.algorithms = algorithms(layer);
+    setOperations(window.algorithms.bubbleSort.renderOperations());
   }, []);
+  const [operations, setOperations] = useState<ReactNode>([]);
   return (
     <div className="h-screen">
-      <Flex mb={"3"}>
-        {window.algorithms && window.algorithms.bubbleSort.renderOperations()}
-      </Flex>
+      {operations}
       <Button
         variant="solid"
         onClick={() => {
           if (window.algorithms) {
-            window.algorithms.bubbleSort.executeOperation("Init", [3, 2, 1]);
             window.algorithms.bubbleSort.run();
           }
         }}

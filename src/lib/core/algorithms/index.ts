@@ -2,7 +2,7 @@ import Konva from "konva";
 import { BubbleSort } from "./bubble-sort";
 import { BaseAlgorithm } from "../base-algorithm";
 export type AlgorithmType = {
-  [key: string]: BaseAlgorithm<any>;
+  [key: string]: BaseAlgorithm;
 };
 
 declare global {

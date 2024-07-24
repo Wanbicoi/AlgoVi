@@ -3,32 +3,16 @@ import { BaseShape, Circle, Column } from "../../components";
 import { BaseAlgorithm } from "../base-algorithm";
 import { InsertOperation, UpdateOperation, InitOperation } from "./operations";
 
-export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
-  data: BaseShape[];
-  type: "circle" | "column";
+export abstract class ArrayAlgorithm extends BaseAlgorithm {
+  protected data: BaseShape[];
+  protected type: "circle" | "column";
   constructor(layer: Konva.Layer, type: "circle" | "column" = "column") {
     super(layer);
     this.data = [];
     this.type = type;
+    this.registerOperation("Init", new InitOperation());
     this.registerOperation("Insert", new InsertOperation());
     this.registerOperation("Update", new UpdateOperation());
-    this.registerOperation("Init", new InitOperation());
-  }
-
-  addData(value: number) {
-    const column =
-      this.type == "circle" ? new Circle(value) : new Column(value);
-    column.setPosition(this.data.length * (BaseShape.BASE_UNIT + 10), 0);
-    this.data.push(column);
-  }
-  initData(value: number[]) {
-    this.data = value.map((item, i) => {
-      const newColumn =
-        this.type == "circle" ? new Circle(item) : new Column(item);
-      newColumn.setPosition(i * (BaseShape.BASE_UNIT + 10), 0);
-      return newColumn;
-    });
-    this.data.forEach((column) => column.addTo(this.layer));
   }
 
   async swap(firstIndex: number, secondIndex: number) {
@@ -64,5 +48,26 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
   async unhighlight(index: number) {
     this.data[index].setAttrs(BaseShape.BASE_SHAPE_CONFIG);
     await this.sleep();
+  }
+
+  updateData(index: number, value: number) {
+    if (this.data[index]) this.data[index].value = value;
+  }
+
+  addData(value: number) {
+    const newShape =
+      this.type == "circle" ? new Circle(value) : new Column(value);
+    newShape.setPosition(this.data.length * (BaseShape.BASE_UNIT + 10), 0);
+    newShape.addTo(this.layer);
+    this.data.push(newShape);
+  }
+  initData(value: number[]) {
+    this.data = value.map((item, i) => {
+      const newShape =
+        this.type == "circle" ? new Circle(item) : new Column(item);
+      newShape.setPosition(i * (BaseShape.BASE_UNIT + 10), 0);
+      return newShape;
+    });
+    this.data.forEach((column) => column.addTo(this.layer));
   }
 }

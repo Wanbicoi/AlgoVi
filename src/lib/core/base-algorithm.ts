@@ -1,13 +1,9 @@
 import Konva from "konva";
-import {
-  OperationType,
-  BaseOperation,
-  OperationArgumentType,
-} from "./base-operation";
+import { OperationType, BaseOperation } from "./base-operation";
 import { ReactNode } from "react";
 
-export abstract class BaseAlgorithm<T> {
-  private operations: { [key in OperationType]?: BaseOperation<T> };
+export abstract class BaseAlgorithm {
+  private operations: { [key in OperationType]?: BaseOperation<BaseAlgorithm> };
 
   protected speed: number;
   protected layer: Konva.Layer;
@@ -22,21 +18,14 @@ export abstract class BaseAlgorithm<T> {
 
   protected registerOperation(
     name: OperationType,
-    operation: BaseOperation<T>,
+    operation: BaseOperation<BaseAlgorithm>,
   ) {
     this.operations[name] = operation;
   }
-  public executeOperation(name: OperationType, arg: OperationArgumentType) {
-    const operation = this.operations[name];
-    if (operation) {
-      operation.run(this as unknown as T, arg);
-    }
-  }
+
   public renderOperations(): ReactNode {
-    return Object.keys(this.operations).map((key) =>
-      this.operations[key as keyof typeof this.operations]!.render(
-        this as unknown as T,
-      ),
+    return Object.values(this.operations).map((operation) =>
+      operation.render(this),
     );
   }
 
