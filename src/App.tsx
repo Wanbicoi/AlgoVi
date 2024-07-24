@@ -1,5 +1,5 @@
 /* eslint-disable no-var */
-import { TrackNextIcon, TrackPreviousIcon, BookmarkIcon, PauseIcon, PlayIcon, ResetIcon } from "@radix-ui/react-icons";
+import { TrackNextIcon, TrackPreviousIcon, PauseIcon, PlayIcon, ResetIcon } from "@radix-ui/react-icons";
 import { Button, Flex, Slider, Text, Select } from "@radix-ui/themes";
 import Konva from "konva";
 import { ReactNode, useEffect, useState, useRef } from "react";
@@ -47,9 +47,7 @@ export default function App() {
           {/* Add more algorithm options here */}
         </Select.Content>
       </Select.Root>
-      <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Generate Random Array
-      </Button>
+     
       <Text>Speed:</Text>
       <Slider
         defaultValue={[0,50]}
@@ -82,13 +80,14 @@ export default function App() {
             {showOperations ? 'Hide Operations' : 'Show Operations'}
           </Button>
           {showOperations && (
-            <div className="w-96 absolute bottom-full right-0 mb-2 bg-white p-2 border border-gray-300 rounded shadow-md">
+            <div className="w-96 absolute bottom-full right-0 mb-3 bg-white p-4 border border-gray-300 rounded shadow-md">
               <Flex gap="2" direction="column">
                 {operations}
               </Flex>
             </div>
           )}
         </div>
+
 
     </Flex>
    
