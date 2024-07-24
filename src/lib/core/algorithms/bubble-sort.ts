@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { ArrayAlgorithm } from "../array-algorithm";
 
 export class BubbleSort extends ArrayAlgorithm {

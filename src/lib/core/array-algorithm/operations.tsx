@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { ArrayAlgorithm } from ".";
 import React from "react";
@@ -18,39 +19,43 @@ export class InsertOperation extends BaseOperation<ArrayAlgorithm> {
           algorithm.addData(data.value);
         }}
       >
-        <Flex gap="2">
-          <Form.Field name="value" className="flex gap-2 items-center">
-            <Form.Label>Insert: </Form.Label>
-            <div>
-              <Form.Control asChild>
-                <TextField.Root
-                  required
-                  type="number"
-                  size="2"
-                  placeholder="value"
-                />
-              </Form.Control>
-              <Form.Message match="valueMissing">
-                Please enter value
-              </Form.Message>
-            </div>
+        <Flex
+          gap="2"
+          direction="row"
+          align="center"
+          justify="center"
+          className="bg-white p-4 rounded-lg shadow-md"
+        >
+          <Form.Field name="value" className="flex flex-row gap-2 w-full">
+            <Form.Label className="w-1/4 font-bold mb-2">Insert:</Form.Label>
+            <Form.Control asChild className="w-2/4">
+              <TextField.Root
+                required
+                type="number"
+                placeholder="Enter value"
+                className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
+              />
+            </Form.Control>
+            <Form.Submit asChild className="w-1/4">
+              <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+                <ArrowRightIcon />
+                Insert
+              </Button>
+            </Form.Submit>
           </Form.Field>
-          <Form.Submit asChild>
-            <Button>
-              <ArrowRightIcon />
-            </Button>
-          </Form.Submit>
         </Flex>
       </Form.Root>
     );
   }
 }
+
 export class InitOperation extends BaseOperation<ArrayAlgorithm> {
   render(algorithm: ArrayAlgorithm): React.ReactNode {
     return (
       <Form.Root
         key="init"
         onSubmit={(event) => {
+          event.preventDefault();
           const data = Object.fromEntries(
             new FormData(event.currentTarget),
           ) as any;
@@ -58,36 +63,30 @@ export class InitOperation extends BaseOperation<ArrayAlgorithm> {
           algorithm.initData(data.value);
         }}
       >
-        <Flex gap="2">
-          <Form.Field name="value" className="flex gap-2 items-center">
-            <Form.Label>Init value: </Form.Label>
-            <div>
-              <Form.Control asChild>
-                <TextField.Root
-                  required
-                  type="number"
-                  size="2"
-                  placeholder="3,4,1,6,2,..."
-                />
-              </Form.Control>
-              <Form.Message match="valueMissing">
-                Please enter value
-              </Form.Message>
-              {/* <Form.Message */}
-              {/*   match={(value) => { */}
-              {/*     console.log(value); */}
-              {/*     return /^(\d,)*\d$/.test(value); */}
-              {/*   }} */}
-              {/* > */}
-              {/*   Not correct format */}
-              {/* </Form.Message> */}
-            </div>
+        <Flex
+          gap="2"
+          direction="row"
+          align="center"
+          justify="center"
+          className="bg-white p-4 rounded-lg shadow-md"
+        >
+          <Form.Field name="value" className="flex flex-row gap-2 w-full">
+            <Form.Label className="w-1/4 font-bold mb-2">Init value:</Form.Label>
+            <Form.Control asChild className="w-2/4">
+              <TextField.Root
+                required
+                type="text"
+                placeholder="Enter initial values (e.g. 1,2,3,4,5)"
+                className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
+              />
+            </Form.Control>
+            <Form.Submit asChild className="w-1/4">
+              <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+                <ArrowRightIcon />
+                Init
+              </Button>
+            </Form.Submit>
           </Form.Field>
-          <Form.Submit asChild>
-            <Button>
-              <ArrowRightIcon />
-            </Button>
-          </Form.Submit>
         </Flex>
       </Form.Root>
     );
@@ -100,47 +99,62 @@ export class UpdateOperation extends BaseOperation<ArrayAlgorithm> {
       <Form.Root
         key="update"
         onSubmit={(event) => {
+          event.preventDefault();
           const data = Object.fromEntries(
             new FormData(event.currentTarget),
           ) as any;
           algorithm.updateData(data.index, data.value);
         }}
       >
-        <Flex gap="2">
-          <Form.Field name="index" className="flex gap-2 items-center">
-            <Form.Label>Update: </Form.Label>
-            <div>
-              <Form.Control asChild>
-                <TextField.Root
-                  required
-                  type="number"
-                  size="2"
-                  placeholder="index"
-                />
-              </Form.Control>
-              <Form.Message match="valueMissing">
-                Please enter value
-              </Form.Message>
-            </div>
+        <Flex
+          gap="2"
+          direction="row"
+          align="center"
+          justify="center"
+          className="bg-white p-4 rounded-lg shadow-md"
+        >
+          <Flex direction="row" gap="2" className="w-full">
+          <Flex
+          gap="2"
+          direction="column"
+          align="center"
+          justify="center"
+          className="bg-white"
+        >
+          <Form.Field name="index" className="flex flex-grow gap-2">
+            <Form.Label className="w-1/4 font-bold mb-2">Update index:</Form.Label>
+            <Form.Control asChild className="w-3/4">
+              <TextField.Root
+                required
+                type="number"
+                placeholder="Enter index"
+                className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
+              />
+            </Form.Control>
+            <Form.Message match="valueMissing">
+              Please enter index
+            </Form.Message>
           </Form.Field>
-          <Form.Field name="value" className="flex gap-2 items-center">
-            <div>
-              <Form.Control asChild>
-                <TextField.Root
-                  required
-                  type="number"
-                  size="2"
-                  placeholder="value"
-                />
-              </Form.Control>
-              <Form.Message match="valueMissing">
-                Please enter value
-              </Form.Message>
-            </div>
+          <Form.Field name="value" className="flex flex-grow gap-2">
+            <Form.Label className="w-1/4 font-bold mb-2">New value:</Form.Label>
+            <Form.Control asChild className="w-3/4">
+              <TextField.Root
+                required
+                type="number"
+                placeholder="Enter new value"
+                className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
+              />
+            </Form.Control>
+            <Form.Message match="valueMissing">
+              Please enter new value
+            </Form.Message>
           </Form.Field>
-          <Form.Submit asChild>
-            <Button>
+          </Flex>
+          </Flex>
+          <Form.Submit asChild className="w-1/4">
+            <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
               <ArrowRightIcon />
+              Update
             </Button>
           </Form.Submit>
         </Flex>
