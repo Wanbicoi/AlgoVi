@@ -1,33 +1,26 @@
 import Konva from "konva";
-import { OperationType, BaseOperation } from "./base-operation";
-import { ReactNode } from "react";
+import { OperationType } from "./base-operation";
 
 export abstract class BaseAlgorithm {
-  private operations: { [key in OperationType]?: BaseOperation<BaseAlgorithm> };
-
-  protected speed: number;
-  protected layer: Konva.Layer;
-  constructor(layer: Konva.Layer, speed: number = 1) {
-    this.speed = speed;
-    this.layer = layer;
-    this.operations = {};
+  protected _operations: OperationType[];
+  protected _speed: number;
+  protected _layer: Konva.Layer;
+  constructor(
+    layer: Konva.Layer,
+    operations: OperationType[],
+    speed: number = 1,
+  ) {
+    this._speed = speed;
+    this._layer = layer;
+    this._operations = operations;
   }
-  protected getDuration = () => 0.3 * this.speed;
+
+  get operations() {
+    return this._operations;
+  }
+  protected getDuration = () => 0.3 * this._speed;
   protected sleep = (ms = this.getDuration() + 500) =>
     new Promise((r) => setTimeout(r, ms));
-
-  protected registerOperation(
-    name: OperationType,
-    operation: BaseOperation<BaseAlgorithm>,
-  ) {
-    this.operations[name] = operation;
-  }
-
-  public renderOperations(): ReactNode {
-    return Object.values(this.operations).map((operation) =>
-      operation.render(this),
-    );
-  }
 
   abstract run(): void;
 

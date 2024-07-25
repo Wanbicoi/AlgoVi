@@ -1,7 +1,11 @@
 /* eslint-disable prefer-const */
+import Konva from "konva";
 import { ArrayAlgorithm } from "../array-algorithm";
 
 export class BubbleSort extends ArrayAlgorithm {
+  constructor(layer: Konva.Layer) {
+    super(layer, ["Insert", "Init"]);
+  }
   async run() {
     let n = this.data.length;
     for (let i = 0; i < n - 1; i++) {

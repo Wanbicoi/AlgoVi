@@ -1,7 +1,5 @@
-import { ReactNode } from "react";
+import { BaseAlgorithm } from "./base-algorithm";
 
 export type OperationType = "Insert" | "Update" | "Init" | "Search";
-
-export abstract class BaseOperation<T> {
-  abstract render(algorithm: T): ReactNode;
-}
+export type BaseOperationProps = { algorithm: BaseAlgorithm };
+export type BaseOperationType<T> = (algorithm: T) => React.ReactNode;
