@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { ArrayAlgorithm } from ".";
 import React from "react";
@@ -13,7 +14,7 @@ export class InsertOperation extends BaseOperation<ArrayAlgorithm> {
         onSubmit={(event) => {
           event.preventDefault();
           const data = Object.fromEntries(
-            new FormData(event.currentTarget),
+            new FormData(event.currentTarget)
           ) as any;
           algorithm.addData(data.value);
         }}
@@ -52,7 +53,7 @@ export class InitOperation extends BaseOperation<ArrayAlgorithm> {
         key="init"
         onSubmit={(event) => {
           const data = Object.fromEntries(
-            new FormData(event.currentTarget),
+            new FormData(event.currentTarget)
           ) as any;
           console.log(data);
           algorithm.initData(data.value);
@@ -102,40 +103,39 @@ export class UpdateOperation extends BaseOperation<ArrayAlgorithm> {
         key="update"
         onSubmit={(event) => {
           const data = Object.fromEntries(
-            new FormData(event.currentTarget),
+            new FormData(event.currentTarget)
           ) as any;
           algorithm.updateData(data.index, data.value);
         }}
       >
         <Flex gap="2">
           <Form.Field name="index" className="w-5/6 flex gap-2 items-center">
-
             <Form.Label className="w-1/4">Update: </Form.Label>
-                <div className="flex space-x-2 w-3/4">
-                  <Form.Control asChild>
-                    <TextField.Root
-                      required
-                      type="number"
-                      size="2"
-                      placeholder="index"
-                    />
-                  </Form.Control>
-                  <Form.Message match="valueMissing">
-                    Please enter value
-                  </Form.Message>
+            <div className="flex space-x-2 w-3/4">
+              <Form.Control asChild>
+                <TextField.Root
+                  required
+                  type="number"
+                  size="2"
+                  placeholder="index"
+                />
+              </Form.Control>
+              <Form.Message match="valueMissing">
+                Please enter value
+              </Form.Message>
 
-                  <Form.Control asChild>
-                    <TextField.Root
-                      required
-                      type="number"
-                      size="2"
-                      placeholder="value"
-                    />
-                  </Form.Control>
-                  <Form.Message match="valueMissing">
-                    Please enter value
-                  </Form.Message>
-                </div>
+              <Form.Control asChild>
+                <TextField.Root
+                  required
+                  type="number"
+                  size="2"
+                  placeholder="value"
+                />
+              </Form.Control>
+              <Form.Message match="valueMissing">
+                Please enter value
+              </Form.Message>
+            </div>
           </Form.Field>
 
           <Form.Submit asChild className="w-1/6">
