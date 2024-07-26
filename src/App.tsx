@@ -8,7 +8,7 @@ import {
 } from "@radix-ui/react-icons";
 import { Button, Flex, Slider, Text, Select } from "@radix-ui/themes";
 import Konva from "konva";
-import { ReactNode, useEffect, useState, useRef } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { algorithms } from "./lib/core/algorithms";
 import Header from "./lib/components/common/header";
 import ArrayOperaions from "./lib/core/array-algorithm/operations";
@@ -16,38 +16,32 @@ import ArrayOperaions from "./lib/core/array-algorithm/operations";
 export default function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [showOperations, setShowOperations] = useState(false);
+  const [operations, setOperations] = useState<ReactNode>([]);
 
   useEffect(() => {
-    var stage = new Konva.Stage({
+    const stage = new Konva.Stage({
       container: "container",
       width: window.innerWidth / 2,
       height: window.innerHeight / 2,
     });
 
-    var layer = new Konva.Layer();
+    const layer = new Konva.Layer();
     stage.add(layer);
     window.algorithms = algorithms(layer);
   }, []);
 
-  // const runAlgorithm = () => {
-  //   setIsRunning(true);
-  // };
-  // const stopAlgorithm = () => {
-  //   setIsRunning(false);
-  // };
-
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
       <Header />
       <div
         id="container"
-        className="flex items-center justify-center w-full h-full bg-gray-200 p-4 rounded-lg shadow-md"
+        className="flex items-center justify-center w-full h-full bg-gray-200 dark:bg-gray-800 p-4 rounded-lg shadow-md"
       ></div>
 
       <Flex
         direction="column"
         gap="3"
-        className="p-6 bg-white rounded-lg shadow-md"
+        className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md"
       >
         <Flex gap="3" align="center">
           <Select.Root>
@@ -59,9 +53,10 @@ export default function App() {
             </Select.Content>
           </Select.Root>
 
-          <Text>Speed:</Text>
+          <Text className="text-black dark:text-white">Speed:</Text>
           <Slider defaultValue={[0, 50]} max={100} step={1} className="w-20" />
           <TrackPreviousIcon
+            className="text-black dark:text-white"
             onClick={() => {
               if (window.algorithms) {
                 window.algorithms.bubbleSort.increaseSpeed(-0.25);
@@ -69,6 +64,7 @@ export default function App() {
             }}
           />
           <PlayIcon
+            className="text-black dark:text-white"
             onClick={() => {
               if (window.algorithms) {
                 window.algorithms.bubbleSort.stop();
@@ -76,6 +72,7 @@ export default function App() {
             }}
           />
           <TrackNextIcon
+            className="text-black dark:text-white"
             onClick={() => {
               if (window.algorithms) {
                 window.algorithms.bubbleSort.increaseSpeed();

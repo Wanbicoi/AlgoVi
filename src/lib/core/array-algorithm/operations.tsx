@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { ArrayAlgorithm } from ".";
 import * as Form from "@radix-ui/react-form";
