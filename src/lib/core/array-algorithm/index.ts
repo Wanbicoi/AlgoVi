@@ -1,18 +1,19 @@
 import Konva from "konva";
 import { BaseShape, Circle, Column } from "../../components";
 import { BaseAlgorithm } from "../base-algorithm";
-import { InsertOperation, UpdateOperation, InitOperation } from "./operations";
+import { OperationType } from "../base-operation";
 
 export abstract class ArrayAlgorithm extends BaseAlgorithm {
   protected data: BaseShape[];
   protected type: "circle" | "column";
-  constructor(layer: Konva.Layer, type: "circle" | "column" = "column") {
-    super(layer);
+  constructor(
+    layer: Konva.Layer,
+    operations: OperationType[],
+    type: "circle" | "column" = "column",
+  ) {
+    super(layer, operations);
     this.data = [];
     this.type = type;
-    this.registerOperation("Init", new InitOperation());
-    this.registerOperation("Insert", new InsertOperation());
-    this.registerOperation("Update", new UpdateOperation());
   }
 
   async swap(firstIndex: number, secondIndex: number) {
@@ -58,16 +59,17 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm {
     const newShape =
       this.type == "circle" ? new Circle(value) : new Column(value);
     newShape.setPosition(this.data.length * (BaseShape.BASE_UNIT + 10), 0);
-    newShape.addTo(this.layer);
+    newShape.addTo(this._layer);
     this.data.push(newShape);
   }
   initData(value: number[]) {
+    this.data.forEach((item) => item.destroy());
     this.data = value.map((item, i) => {
       const newShape =
         this.type == "circle" ? new Circle(item) : new Column(item);
       newShape.setPosition(i * (BaseShape.BASE_UNIT + 10), 0);
       return newShape;
     });
-    this.data.forEach((column) => column.addTo(this.layer));
+    this.data.forEach((column) => column.addTo(this._layer));
   }
 }

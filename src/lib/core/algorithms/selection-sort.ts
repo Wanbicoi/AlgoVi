@@ -1,8 +1,11 @@
-import { IBaseAlgorithm } from "../base-algorithm";
+import Konva from "konva";
 import { ArrayAlgorithm } from "../array-algorithm";
 
-export class SelectionSort extends ArrayAlgorithm implements IBaseAlgorithm {
-  async run() {
+export class SelectionSort extends ArrayAlgorithm {
+  constructor(layer: Konva.Layer) {
+    super(layer, ["Insert", "Init"]);
+  }
+  async algorithm() {
     let n = this.data.length;
 
     for (let i = 0; i < n - 1; i++) {

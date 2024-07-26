@@ -11,6 +11,7 @@ import Konva from "konva";
 import { ReactNode, useEffect, useState } from "react";
 import { algorithms } from "./lib/core/algorithms";
 import Header from "./lib/components/common/header";
+import ArrayOperaions from "./lib/core/array-algorithm/operations";
 
 export default function App() {
   const [isRunning, setIsRunning] = useState(false);
@@ -27,14 +28,6 @@ export default function App() {
     const layer = new Konva.Layer();
     stage.add(layer);
     window.algorithms = algorithms(layer);
-    setOperations(window.algorithms.bubbleSort.renderOperations());
-
-    // Apply dark mode based on localStorage
-    if (localStorage.theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
   }, []);
 
   return (
@@ -62,9 +55,30 @@ export default function App() {
 
           <Text className="text-black dark:text-white">Speed:</Text>
           <Slider defaultValue={[0, 50]} max={100} step={1} className="w-20" />
-          <TrackPreviousIcon className="text-black dark:text-white" />
-          <PlayIcon className="text-black dark:text-white" />
-          <TrackNextIcon className="text-black dark:text-white" />
+          <TrackPreviousIcon
+            className="text-black dark:text-white"
+            onClick={() => {
+              if (window.algorithms) {
+                window.algorithms.bubbleSort.increaseSpeed(-0.25);
+              }
+            }}
+          />
+          <PlayIcon
+            className="text-black dark:text-white"
+            onClick={() => {
+              if (window.algorithms) {
+                window.algorithms.bubbleSort.stop();
+              }
+            }}
+          />
+          <TrackNextIcon
+            className="text-black dark:text-white"
+            onClick={() => {
+              if (window.algorithms) {
+                window.algorithms.bubbleSort.increaseSpeed();
+              }
+            }}
+          />
           <Button
             variant="solid"
             onClick={() => {
@@ -94,9 +108,9 @@ export default function App() {
               {showOperations ? "Hide Operations" : "Show Operations"}
             </Button>
             {showOperations && (
-              <div className="w-96 absolute bottom-full right-0 mb-3 bg-white dark:bg-gray-700 p-4 border border-gray-300 dark:border-gray-600 rounded shadow-md">
+              <div className="w-96 absolute bottom-full right-0 mb-3 bg-white p-4 border border-gray-300 rounded shadow-md">
                 <Flex gap="2" direction="column">
-                  {operations}
+                  <ArrayOperaions />
                 </Flex>
               </div>
             )}
