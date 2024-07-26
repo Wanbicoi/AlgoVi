@@ -6,7 +6,7 @@ export class BubbleSort extends ArrayAlgorithm {
   constructor(layer: Konva.Layer) {
     super(layer, ["Insert", "Init"]);
   }
-  async run() {
+  async algorithm() {
     let n = this.data.length;
     for (let i = 0; i < n - 1; i++) {
       await this.highlight(i);

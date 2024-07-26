@@ -61,9 +61,27 @@ export default function App() {
 
           <Text>Speed:</Text>
           <Slider defaultValue={[0, 50]} max={100} step={1} className="w-20" />
-          <TrackPreviousIcon />
-          <PlayIcon />
-          <TrackNextIcon />
+          <TrackPreviousIcon
+            onClick={() => {
+              if (window.algorithms) {
+                window.algorithms.bubbleSort.increaseSpeed(-0.25);
+              }
+            }}
+          />
+          <PlayIcon
+            onClick={() => {
+              if (window.algorithms) {
+                window.algorithms.bubbleSort.stop();
+              }
+            }}
+          />
+          <TrackNextIcon
+            onClick={() => {
+              if (window.algorithms) {
+                window.algorithms.bubbleSort.increaseSpeed();
+              }
+            }}
+          />
           <Button
             variant="solid"
             onClick={() => {
