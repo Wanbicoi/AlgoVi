@@ -60,4 +60,9 @@ export abstract class BaseShape {
   get position(): { x: number; y: number } {
     return { x: this.group.position().x, y: this.group.position().y };
   }
+
+  destroy() {
+    this.group.destroyChildren();
+    this.group.destroy();
+  }
 }

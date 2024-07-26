@@ -2,19 +2,19 @@ import { Button, Flex, TextField } from "@radix-ui/themes";
 import { ArrayAlgorithm } from ".";
 import * as Form from "@radix-ui/react-form";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function ArrayOperaions() {
   if (!window.algorithms) return <></>;
   return (
     <>
+      <InitOperation
+        algorithm={window.algorithms.bubbleSort as ArrayAlgorithm}
+      />
       <InsertOperation
         algorithm={window.algorithms.bubbleSort as ArrayAlgorithm}
       />
       <UpdateOperation
-        algorithm={window.algorithms.bubbleSort as ArrayAlgorithm}
-      />
-      <InitOperation
         algorithm={window.algorithms.bubbleSort as ArrayAlgorithm}
       />
     </>
@@ -65,15 +65,18 @@ function InsertOperation({ algorithm }: OperationProps) {
   );
 }
 function InitOperation({ algorithm }: OperationProps) {
+  const [value, setValue] = useState<string>();
   return (
     <Form.Root
       key="init"
       onSubmit={(event) => {
+        event.preventDefault();
         const data = Object.fromEntries(
           new FormData(event.currentTarget),
         ) as any;
-        console.log(data);
-        algorithm.initData(data.value);
+        algorithm.initData(
+          (data.value as string).split(",").map((item) => parseInt(item)),
+        );
       }}
     >
       <Flex gap="2">
@@ -82,23 +85,33 @@ function InitOperation({ algorithm }: OperationProps) {
           <div className="flex-1">
             <Form.Control asChild className="w-3/4 ">
               <TextField.Root
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
                 required
-                type="number"
+                pattern="(\d+,)*\d+"
+                type="text"
                 size="2"
                 placeholder="3,4,1,6,2,..."
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               />
             </Form.Control>
             <Form.Message match="valueMissing">Please enter value</Form.Message>
-            {/* <Form.Message */}
-            {/*   match={(value) => { */}
-            {/*     console.log(value); */}
-            {/*     return /^(\d,)*\d$/.test(value); */}
-            {/*   }} */}
-            {/* > */}
-            {/*   Not correct format */}
-            {/* </Form.Message> */}
+            <Form.Message match="patternMismatch">
+              Not correct format
+            </Form.Message>
           </div>
+          <Button
+            variant="outline"
+            onClick={() =>
+              setValue(
+                Array.from({ length: 10 }, (_, i) => i + 1)
+                  .sort(() => Math.random() - 0.5)
+                  .join(","),
+              )
+            }
+          >
+            Random
+          </Button>
         </Form.Field>
         <Form.Submit asChild className="w-1/6">
           <Button>
@@ -134,7 +147,6 @@ function UpdateOperation({ algorithm }: OperationProps) {
               />
             </Form.Control>
             <Form.Message match="valueMissing">Please enter value</Form.Message>
-
             <Form.Control asChild>
               <TextField.Root
                 required
@@ -146,7 +158,6 @@ function UpdateOperation({ algorithm }: OperationProps) {
             <Form.Message match="valueMissing">Please enter value</Form.Message>
           </div>
         </Form.Field>
-
         <Form.Submit asChild className="w-1/6">
           <Button>
             <ArrowRightIcon />

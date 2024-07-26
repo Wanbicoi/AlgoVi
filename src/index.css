@@ -1,5 +1,9 @@
 @import "@radix-ui/themes/styles.css";
+input:focus {
+  outline: none;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+

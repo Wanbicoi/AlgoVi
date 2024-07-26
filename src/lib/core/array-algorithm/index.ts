@@ -63,6 +63,7 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm {
     this.data.push(newShape);
   }
   initData(value: number[]) {
+    this.data.forEach((item) => item.destroy());
     this.data = value.map((item, i) => {
       const newShape =
         this.type == "circle" ? new Circle(item) : new Column(item);
