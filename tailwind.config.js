@@ -10,6 +10,10 @@ export default {
           950: "#0c0c0e",
         },
       },
+      fontFamily: {
+        majorMono: ['"Major Mono Display"', "monospace"],
+        quicksand: ['"Quicksand"', "sans-serif"],
+      },
     },
   },
   plugins: [],
