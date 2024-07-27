@@ -9,14 +9,17 @@ import {
 import { Button, Flex, Slider, Text, Select } from "@radix-ui/themes";
 import Konva from "konva";
 import { ReactNode, useEffect, useState } from "react";
-import { algorithms } from "./lib/core/algorithms";
+import { AlgorithmName, Operation, algorithms } from "./lib/core/algorithms";
 import Header from "./lib/components/common/header";
-import ArrayOperaions from "./lib/core/array-algorithm/operations";
+import { useParams } from "react-router-dom";
+import { BaseAlgorithm } from "./lib/core/base-algorithm";
 
-export default function App() {
+export default function AlgorithmDetails() {
+  const { algorithmName } = useParams() as { algorithmName: AlgorithmName };
+
   const [isRunning, setIsRunning] = useState(false);
   const [showOperations, setShowOperations] = useState(false);
-  const [operations, setOperations] = useState<ReactNode>([]);
+  const [algorithm, setAlgorithm] = useState<BaseAlgorithm>();
 
   useEffect(() => {
     const stage = new Konva.Stage({
@@ -27,7 +30,8 @@ export default function App() {
 
     const layer = new Konva.Layer();
     stage.add(layer);
-    window.algorithms = algorithms(layer);
+    const algo = algorithms(layer);
+    setAlgorithm(algo[algorithmName]);
   }, []);
 
   return (
@@ -57,34 +61,23 @@ export default function App() {
           <Slider defaultValue={[0, 50]} max={100} step={1} className="w-20" />
           <TrackPreviousIcon
             className="text-black dark:text-white"
-            onClick={() => {
-              if (window.algorithms) {
-                window.algorithms.bubbleSort.increaseSpeed(-0.25);
-              }
-            }}
+            onClick={() => algorithm?.increaseSpeed(-0.25)}
           />
           <PlayIcon
             className="text-black dark:text-white"
             onClick={() => {
-              if (window.algorithms) {
-                window.algorithms.bubbleSort.stop();
-              }
+              algorithm?.stop();
             }}
           />
           <TrackNextIcon
             className="text-black dark:text-white"
-            onClick={() => {
-              if (window.algorithms) {
-                window.algorithms.bubbleSort.increaseSpeed();
-              }
-            }}
+            onClick={() => algorithm?.increaseSpeed()}
           />
           <Button
             variant="solid"
             onClick={() => {
-              if (window.algorithms) {
-                window.algorithms.bubbleSort.run();
-              }
+              algorithm?.run();
+              setIsRunning(!!algorithm?.isRunning);
             }}
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
@@ -110,7 +103,10 @@ export default function App() {
             {showOperations && (
               <div className="w-96 absolute bottom-full right-0 mb-3 bg-white p-4 border border-gray-300 rounded shadow-md">
                 <Flex gap="2" direction="column">
-                  <ArrayOperaions />
+                  <Operation
+                    algorithmName={algorithmName}
+                    algorithm={algorithm!}
+                  />
                 </Flex>
               </div>
             )}

@@ -3,23 +3,23 @@ import { Button, Flex, TextField } from "@radix-ui/themes";
 import { ArrayAlgorithm } from ".";
 import * as Form from "@radix-ui/react-form";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
+import { OperationType } from "../base-operation";
 
-export default function ArrayOperaions() {
-  if (!window.algorithms) return <></>;
-  return (
-    <>
-      <InitOperation
-        algorithm={window.algorithms.bubbleSort as ArrayAlgorithm}
-      />
-      <InsertOperation
-        algorithm={window.algorithms.bubbleSort as ArrayAlgorithm}
-      />
-      <UpdateOperation
-        algorithm={window.algorithms.bubbleSort as ArrayAlgorithm}
-      />
-    </>
-  );
+type Props = {
+  algorithm: ArrayAlgorithm;
+};
+
+export default function ArrayOperaions({ algorithm }: Props) {
+  const operations: Record<OperationType, ReactNode> = {
+    Insert: <InitOperation algorithm={algorithm} key="init" />,
+    Update: <UpdateOperation algorithm={algorithm} key="update" />,
+    Init: <InsertOperation algorithm={algorithm} key="insert" />,
+    Search: undefined,
+  };
+  return (Object.keys(operations) as OperationType[])
+    .filter((operationName) => algorithm.operations.includes(operationName))
+    .map((operationName) => operations[operationName]);
 }
 
 type OperationProps = {
@@ -31,7 +31,6 @@ function InsertOperation({ algorithm }: OperationProps) {
   return (
     <Form.Root
       ref={formRef}
-      key="insert"
       onSubmit={(event) => {
         event.preventDefault();
         const data = Object.fromEntries(
@@ -69,7 +68,6 @@ function InitOperation({ algorithm }: OperationProps) {
   const [value, setValue] = useState<string>();
   return (
     <Form.Root
-      key="init"
       onSubmit={(event) => {
         event.preventDefault();
         const data = Object.fromEntries(
@@ -127,7 +125,6 @@ function InitOperation({ algorithm }: OperationProps) {
 function UpdateOperation({ algorithm }: OperationProps) {
   return (
     <Form.Root
-      key="update"
       onSubmit={(event) => {
         const data = Object.fromEntries(
           new FormData(event.currentTarget)

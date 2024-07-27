@@ -47,6 +47,9 @@ export abstract class BaseAlgorithm {
   get speed() {
     return this._speed;
   }
+  get isRunning() {
+    return this._isRunning;
+  }
   increaseSpeed(margin: number = 0.25) {
     if (this._speed - margin > 0 && this._speed - margin < 10)
       this._speed -= margin;
