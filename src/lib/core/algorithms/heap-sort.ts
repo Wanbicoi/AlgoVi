@@ -1,6 +1,6 @@
 import { ArrayAlgorithm } from "../array-algorithm";
 
-class HeapSort extends ArrayAlgorithm {
+export class HeapSort extends ArrayAlgorithm {
   async run() {
     await this.buildHeap();
 
