@@ -1,42 +1,19 @@
 import Konva from "konva";
 import { BaseShape, Circle, Column } from "../../components";
 import { BaseAlgorithm } from "../base-algorithm";
-import {
-  InsertOperation,
-  UpdateOperation,
-  InitOperation,
-  DeleteOperation,
-} from "./operations";
+import { OperationType } from "../base-operation";
 
-export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
-  data: BaseShape[];
-  type: "circle" | "column";
-  private paused: boolean = false;
-  private resumeSignal: ((value?: unknown) => void) | null = null;
-  constructor(layer: Konva.Layer, type: "circle" | "column" = "column") {
-    super(layer);
+export abstract class ArrayAlgorithm extends BaseAlgorithm {
+  protected data: BaseShape[];
+  protected type: "circle" | "column";
+  constructor(
+    layer: Konva.Layer,
+    operations: OperationType[],
+    type: "circle" | "column" = "column",
+  ) {
+    super(layer, operations);
     this.data = [];
     this.type = type;
-    this.registerOperation("Insert", new InsertOperation());
-    this.registerOperation("Update", new UpdateOperation());
-    this.registerOperation("Init", new InitOperation());
-    this.registerOperation("Delete", new DeleteOperation());
-  }
-
-  addData(value: number) {
-    const column =
-      this.type == "circle" ? new Circle(value) : new Column(value);
-    column.setPosition(this.data.length * (BaseShape.BASE_UNIT + 10), 0);
-    this.data.push(column);
-  }
-  initData(value: number[]) {
-    this.data = value.map((item, i) => {
-      const newColumn =
-        this.type == "circle" ? new Circle(item) : new Column(item);
-      newColumn.setPosition(i * (BaseShape.BASE_UNIT + 10), 0);
-      return newColumn;
-    });
-    this.data.forEach((column) => column.addTo(this.layer));
   }
   delete(value: number) {
     const index = this.data.findIndex((item) => item.value == value);
@@ -83,23 +60,25 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm<ArrayAlgorithm> {
     await this.sleep();
   }
 
-  pause() {
-    this.paused = true;
+  updateData(index: number, value: number) {
+    if (this.data[index]) this.data[index].value = value;
   }
 
-  resume() {
-    this.paused = false;
-    if (this.resumeSignal) {
-      this.resumeSignal();
-      this.resumeSignal = null;
-    }
+  addData(value: number) {
+    const newShape =
+      this.type == "circle" ? new Circle(value) : new Column(value);
+    newShape.setPosition(this.data.length * (BaseShape.BASE_UNIT + 10), 0);
+    newShape.addTo(this._layer);
+    this.data.push(newShape);
   }
-
-  protected async checkPause() {
-    if (this.paused) {
-      await new Promise((resolve) => {
-        this.resumeSignal = resolve;
-      });
-    }
+  initData(value: number[]) {
+    this.data.forEach((item) => item.destroy());
+    this.data = value.map((item, i) => {
+      const newShape =
+        this.type == "circle" ? new Circle(item) : new Column(item);
+      newShape.setPosition(i * (BaseShape.BASE_UNIT + 10), 0);
+      return newShape;
+    });
+    this.data.forEach((column) => column.addTo(this._layer));
   }
 }

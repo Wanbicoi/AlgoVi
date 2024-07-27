@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-form": "^0.1.0",
     "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-toolbar": "^1.1.0",
     "@radix-ui/themes": "^3.0.5",
     "konva": "^9.3.11",
     "react": "^18.2.0",

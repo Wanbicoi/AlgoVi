@@ -4,7 +4,7 @@ import { BaseAlgorithm } from "../base-algorithm";
 import { SelectionSort } from "./selection-sort";
 import { linearSearch } from "./linear-search";
 export type AlgorithmType = {
-  [key: string]: BaseAlgorithm<any>;
+  [key: string]: BaseAlgorithm;
 };
 
 declare global {
