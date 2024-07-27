@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { BaseAlgorithm, IHighlight, ISwap } from "./base-algorithm";
+import { BaseAlgorithm, IHighlight, ISwap } from "../base-algorithm";
 import { Node } from "../components/node";
 
 export type TreeNode = {

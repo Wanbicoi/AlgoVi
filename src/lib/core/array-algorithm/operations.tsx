@@ -35,7 +35,7 @@ function InsertOperation({ algorithm }: OperationProps) {
       onSubmit={(event) => {
         event.preventDefault();
         const data = Object.fromEntries(
-          new FormData(event.currentTarget),
+          new FormData(event.currentTarget)
         ) as any;
         algorithm.addData(data.value);
         formRef.current?.reset();
@@ -73,10 +73,10 @@ function InitOperation({ algorithm }: OperationProps) {
       onSubmit={(event) => {
         event.preventDefault();
         const data = Object.fromEntries(
-          new FormData(event.currentTarget),
+          new FormData(event.currentTarget)
         ) as any;
         algorithm.initData(
-          (data.value as string).split(",").map((item) => parseInt(item)),
+          (data.value as string).split(",").map((item) => parseInt(item))
         );
       }}
     >
@@ -107,7 +107,7 @@ function InitOperation({ algorithm }: OperationProps) {
               setValue(
                 Array.from({ length: 10 }, (_, i) => i + 1)
                   .sort(() => Math.random() - 0.5)
-                  .join(","),
+                  .join(",")
               )
             }
           >
@@ -130,7 +130,7 @@ function UpdateOperation({ algorithm }: OperationProps) {
       key="update"
       onSubmit={(event) => {
         const data = Object.fromEntries(
-          new FormData(event.currentTarget),
+          new FormData(event.currentTarget)
         ) as any;
         algorithm.updateData(data.index, data.value);
       }}
