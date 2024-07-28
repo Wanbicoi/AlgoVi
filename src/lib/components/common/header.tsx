@@ -42,7 +42,7 @@ const Header: React.FC = () => {
         </Text>
       </div>
       <div className="flex items-center">
-        <Switch checked={isLightTheme} onCheckedChange={handleThemeChange} />
+        <Switch checked={!isLightTheme} onCheckedChange={handleThemeChange} />
         <Toolbar.Button asChild>
           <button
             onClick={handleThemeChange}

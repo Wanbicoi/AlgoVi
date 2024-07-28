@@ -7,7 +7,7 @@ import {
   PlayIcon,
   ResetIcon,
 } from "@radix-ui/react-icons";
-import { Button, Flex, Slider, Text, Select } from "@radix-ui/themes";
+import { Button, Flex, Slider, Text, Select, Popover } from "@radix-ui/themes";
 import Konva from "konva";
 import { ReactNode, useEffect, useState } from "react";
 import { AlgorithmName, Operation, algorithms } from "./lib/core/algorithms";
@@ -35,41 +35,60 @@ export default function AlgorithmDetails() {
     setAlgorithm(algo[algorithmName]);
   }, []);
 
+  const handlePopoverOpenChange = (open: boolean) => {
+    setShowOperations(open);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
       <Header />
-      <div
-        id="container"
-        className="flex items-center justify-center w-full h-full bg-gray-200 dark:bg-gray-800 p-4 rounded-lg shadow-md"
-      ></div>
+      <div className="flex-grow flex items-center justify-center">
+        <div
+          id="container"
+          className="flex justify-center items-center w-full h-full bg-gray-200 dark:bg-gray-800"
+        ></div>
+      </div>
 
-      <Flex
-        direction="column"
-        gap="3"
-        className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md"
-      >
-        <Flex gap="3" align="center">
-          <Select.Root>
+      <div className="fixed bottom-0 w-full bg-white dark:bg-gray-800">
+        <Flex
+          gap="3"
+          className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md items-center justify-center"
+        >
+          <Select.Root defaultValue={algorithmName}>
+            <Select.Trigger />
             <Select.Content>
-              <Select.Item value="selection">Selection Sort</Select.Item>
-              <Select.Item value="bubble">Bubble Sort</Select.Item>
-              <Select.Item value="insertion">Insertion Sort</Select.Item>
-              {/* Add more algorithm options here */}
+              <Select.Group>
+                <Select.Item value="orange">Selection sort</Select.Item>
+                <Select.Item value="apple">Insertion sort</Select.Item>
+              </Select.Group>
             </Select.Content>
           </Select.Root>
 
           <Text className="text-black dark:text-white">Speed:</Text>
-          <Slider defaultValue={[0, 50]} max={100} step={1} className="w-20" />
+          <Slider defaultValue={[50]} max={100} step={1} className="w-36" />
           <TrackPreviousIcon
             className="text-black dark:text-white"
             onClick={() => algorithm?.increaseSpeed(-0.25)}
           />
-          <PlayIcon
-            className="text-black dark:text-white"
-            onClick={() => {
-              algorithm?.stop();
-            }}
-          />
+
+          {isRunning ? (
+            <PauseIcon
+              className="text-black dark:text-white"
+              onClick={() => {
+                algorithm?.stop();
+                setIsRunning(false);
+              }}
+            />
+          ) : (
+            <PlayIcon
+              className="text-black dark:text-white"
+              onClick={() => {
+                algorithm?.run();
+                setIsRunning(true);
+              }}
+            />
+          )}
+
           <TrackNextIcon
             className="text-black dark:text-white"
             onClick={() => algorithm?.increaseSpeed()}
@@ -93,27 +112,36 @@ export default function AlgorithmDetails() {
             <ResetIcon />
             Reset
           </Button>
-          <div className="relative">
-            <Button
-              variant="soft"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => setShowOperations(!showOperations)}
-            >
-              {showOperations ? "Hide Operations" : "Show Operations"}
-            </Button>
-            {showOperations && (
-              <div className="w-96 absolute bottom-full right-0 mb-3 bg-white p-4 border border-gray-300 rounded shadow-md">
-                <Flex gap="2" direction="column">
-                  <Operation
-                    algorithmName={algorithmName}
-                    algorithm={algorithm!}
-                  />
-                </Flex>
-              </div>
-            )}
-          </div>
+
+          <Popover.Root
+            open={showOperations}
+            onOpenChange={handlePopoverOpenChange}
+          >
+            <Popover.Trigger>
+              <Button
+                variant="soft"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => setShowOperations(!showOperations)}
+              >
+                {showOperations}
+                Operations
+              </Button>
+            </Popover.Trigger>
+            <Popover.Content sideOffset={5}>
+              <Flex gap="2" direction="column">
+                {showOperations && (
+                  <Flex gap="2" direction="column">
+                    <Operation
+                      algorithmName={algorithmName}
+                      algorithm={algorithm!}
+                    />
+                  </Flex>
+                )}
+              </Flex>
+            </Popover.Content>
+          </Popover.Root>
         </Flex>
-      </Flex>
+      </div>
     </div>
   );
 }

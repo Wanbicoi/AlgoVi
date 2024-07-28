@@ -34,15 +34,18 @@ function InsertOperation({ algorithm }: OperationProps) {
       onSubmit={(event) => {
         event.preventDefault();
         const data = Object.fromEntries(
-          new FormData(event.currentTarget),
+          new FormData(event.currentTarget)
         ) as any;
         algorithm.addData(data.value);
         formRef.current?.reset();
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Insert: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">Insert: </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4">
               <TextField.Root
@@ -71,16 +74,19 @@ function InitOperation({ algorithm }: OperationProps) {
       onSubmit={(event) => {
         event.preventDefault();
         const data = Object.fromEntries(
-          new FormData(event.currentTarget),
+          new FormData(event.currentTarget)
         ) as any;
         algorithm.initData(
-          (data.value as string).split(",").map((item) => parseInt(item)),
+          (data.value as string).split(",").map((item) => parseInt(item))
         );
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Init value: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">Init value: </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4 ">
               <TextField.Root
@@ -105,7 +111,7 @@ function InitOperation({ algorithm }: OperationProps) {
               setValue(
                 Array.from({ length: 10 }, (_, i) => i + 1)
                   .sort(() => Math.random() - 0.5)
-                  .join(","),
+                  .join(",")
               )
             }
           >
@@ -127,7 +133,7 @@ function UpdateOperation({ algorithm }: OperationProps) {
     <Form.Root
       onSubmit={(event) => {
         const data = Object.fromEntries(
-          new FormData(event.currentTarget),
+          new FormData(event.currentTarget)
         ) as any;
         algorithm.updateData(data.index, data.value);
       }}
