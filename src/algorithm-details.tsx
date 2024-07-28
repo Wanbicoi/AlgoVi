@@ -9,7 +9,7 @@ import {
 } from "@radix-ui/react-icons";
 import { Button, Flex, Slider, Text, Select, Popover } from "@radix-ui/themes";
 import Konva from "konva";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { AlgorithmName, Operation, algorithms } from "./lib/core/algorithms";
 import Header from "./lib/components/common/header";
 import { useParams } from "react-router-dom";
@@ -22,12 +22,42 @@ export default function AlgorithmDetails() {
   const [showOperations, setShowOperations] = useState(false);
   const [algorithm, setAlgorithm] = useState<BaseAlgorithm>();
 
+  const handleWheel = useCallback((e: Konva.KonvaEventObject<WheelEvent>) => {
+    e.evt.preventDefault();
+    const stage = e.target.getStage();
+    if (!stage) return;
+
+    const scaleBy = 1.1;
+    const oldScale = stage.scaleX();
+
+    const pointer = stage.getPointerPosition();
+    if (!pointer) return;
+
+    const mousePointTo = {
+      x: pointer.x / oldScale - stage.x() / oldScale,
+      y: pointer.y / oldScale - stage.y() / oldScale,
+    };
+
+    const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    stage.scale({ x: newScale, y: newScale });
+
+    const newPos = {
+      x: -(mousePointTo.x - pointer.x / newScale) * newScale,
+      y: -(mousePointTo.y - pointer.y / newScale) * newScale,
+    };
+    stage.position(newPos);
+    stage.batchDraw();
+  }, []);
+
+  const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const stage = new Konva.Stage({
-      container: "container",
-      width: window.innerWidth / 2,
-      height: window.innerHeight / 2,
+      container: containerRef.current!,
+      width: containerRef.current?.offsetWidth,
+      height: containerRef.current?.offsetHeight,
+      draggable: true,
     });
+    stage.on("wheel", handleWheel);
 
     const layer = new Konva.Layer();
     stage.add(layer);
@@ -42,12 +72,11 @@ export default function AlgorithmDetails() {
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
       <Header />
-      <div className="flex-grow flex items-center justify-center">
-        <div
-          id="container"
-          className="flex justify-center items-center w-full h-full bg-gray-200 dark:bg-gray-800"
-        ></div>
-      </div>
+      <div
+        ref={containerRef}
+        id="container"
+        className="w-full h-full bg-gray-200 dark:bg-gray-800"
+      />
 
       <div className="fixed bottom-0 w-full bg-white dark:bg-gray-800">
         <Flex
