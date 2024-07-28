@@ -24,7 +24,7 @@ export abstract class BaseShape {
       verticalAlign: "middle",
       align: "center",
       fill: "black",
-      text: value.toString(),
+      text: value !== -10000 ? value.toString() : "",
       width: BaseShape.BASE_UNIT,
       height: BaseShape.BASE_UNIT,
     });

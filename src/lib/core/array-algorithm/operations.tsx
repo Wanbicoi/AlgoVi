@@ -15,7 +15,8 @@ export default function ArrayOperaions({ algorithm }: Props) {
     Insert: <InitOperation algorithm={algorithm} key="init" />,
     Update: <UpdateOperation algorithm={algorithm} key="update" />,
     Init: <InsertOperation algorithm={algorithm} key="insert" />,
-    Search: undefined,
+    Search: <SearchOperation algorithm={algorithm} key="search" />,
+    Delete: undefined,
   };
   return (Object.keys(operations) as OperationType[])
     .filter((operationName) => algorithm.operations.includes(operationName))
@@ -146,6 +147,42 @@ function UpdateOperation({ algorithm }: OperationProps) {
             </Form.Control>
             <Form.Message match="valueMissing">Please enter value</Form.Message>
             <Form.Control asChild>
+              <TextField.Root
+                required
+                type="number"
+                size="2"
+                placeholder="value"
+              />
+            </Form.Control>
+            <Form.Message match="valueMissing">Please enter value</Form.Message>
+          </div>
+        </Form.Field>
+        <Form.Submit asChild className="w-1/6">
+          <Button>
+            <ArrowRightIcon />
+          </Button>
+        </Form.Submit>
+      </Flex>
+    </Form.Root>
+  );
+}
+
+function SearchOperation({ algorithm }: OperationProps) {
+  return (
+    <Form.Root
+      onSubmit={(event) => {
+        event.preventDefault();
+        const data = Object.fromEntries(
+          new FormData(event.currentTarget)
+        ) as any;
+        algorithm.search(data.value);
+      }}
+    >
+      <Flex gap="2">
+        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
+          <Form.Label className="w-1/4">Search: </Form.Label>
+          <div className="flex-1">
+            <Form.Control asChild className="w-3/4">
               <TextField.Root
                 required
                 type="number"

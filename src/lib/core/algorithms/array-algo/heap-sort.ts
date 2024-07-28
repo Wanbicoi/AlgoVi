@@ -1,12 +1,20 @@
-import { ArrayAlgorithm } from "../array-algorithm";
+import { ArrayAlgorithm } from "../../array-algorithm";
+import Konva from "konva";
 
 export class HeapSort extends ArrayAlgorithm {
-  async run() {
+  constructor(layer: Konva.Layer) {
+    super(layer, ["Insert", "Init"]);
+  }
+
+  async algorithm() {
     await this.buildHeap();
 
     for (let i = this.data.length - 1; i > 0; i--) {
-      await this.checkPause();
+      await this.highlight(0);
+      await this.highlight(i);
       await this.swap(0, i);
+      await this.unhighlight(0);
+      await this.unhighlight(i);
       await this.heapify(i, 0);
     }
   }
@@ -15,7 +23,6 @@ export class HeapSort extends ArrayAlgorithm {
     let n = this.data.length;
 
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-      await this.checkPause();
       await this.heapify(n, i);
     }
   };
@@ -24,6 +31,10 @@ export class HeapSort extends ArrayAlgorithm {
     let largest = i;
     let left = 2 * i + 1;
     let right = 2 * i + 2;
+
+    await this.highlight(i);
+    if (left < n) await this.highlight(left);
+    if (right < n) await this.highlight(right);
 
     if (left < n && this.data[left].value > this.data[largest].value) {
       largest = left;
@@ -34,9 +45,15 @@ export class HeapSort extends ArrayAlgorithm {
     }
 
     if (largest !== i) {
-      await this.checkPause();
       await this.swap(i, largest);
+      await this.unhighlight(i);
+      if (left < n) await this.unhighlight(left);
+      if (right < n) await this.unhighlight(right);
       await this.heapify(n, largest);
+    } else {
+      await this.unhighlight(i);
+      if (left < n) await this.unhighlight(left);
+      if (right < n) await this.unhighlight(right);
     }
   };
 }

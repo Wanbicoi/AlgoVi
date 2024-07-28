@@ -5,6 +5,7 @@ export default function App() {
   return (
     <Link asChild>
       <RouterLink to={"bubble-sort"}>Bubble Sort</RouterLink>
+      <RouterLink to={"linear-search"}>Linear Search</RouterLink>
     </Link>
   );
 }

@@ -15,6 +15,7 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm {
     this.data = [];
     this.type = type;
   }
+  
   delete(value: number) {
     const index = this.data.findIndex((item) => item.value == value);
     if (index !== -1) {
@@ -80,5 +81,10 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm {
       return newShape;
     });
     this.data.forEach((column) => column.addTo(this._layer));
+  }
+
+  async search(value: number) {
+    // do nothing
+    // subclass should implement this method
   }
 }

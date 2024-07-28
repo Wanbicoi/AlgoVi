@@ -11,7 +11,7 @@ export abstract class BaseAlgorithm {
   constructor(
     layer: Konva.Layer,
     operations: OperationType[],
-    speed: number = 1,
+    speed: number = 1
   ) {
     this._speed = speed;
     this._layer = layer;
@@ -61,7 +61,4 @@ export abstract class BaseAlgorithm {
   abstract unhighlight(index: number): void;
 
   abstract swap(firstIndex: number, secondIndex: number): void;
-
-  abstract pause(): void;
-  abstract resume(): void;
 }

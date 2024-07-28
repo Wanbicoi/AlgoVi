@@ -9,7 +9,11 @@ import {
 import { Button, Flex, Slider, Text, Select } from "@radix-ui/themes";
 import Konva from "konva";
 import { ReactNode, useEffect, useState } from "react";
-import { AlgorithmName, Operation, algorithms } from "./lib/core/algorithms";
+import {
+  AlgorithmName,
+  Operation,
+  algorithms,
+} from "./lib/core/algorithms/array-algo";
 import Header from "./lib/components/common/header";
 import { useParams } from "react-router-dom";
 import { BaseAlgorithm } from "./lib/core/base-algorithm";
@@ -24,8 +28,8 @@ export default function AlgorithmDetails() {
   useEffect(() => {
     const stage = new Konva.Stage({
       container: "container",
-      width: window.innerWidth / 2,
-      height: window.innerHeight / 2,
+      width: 1200,
+      height: 800,
     });
 
     const layer = new Konva.Layer();

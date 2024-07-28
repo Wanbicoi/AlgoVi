@@ -1,7 +1,12 @@
-import { ArrayAlgorithm } from "../array-algorithm";
+import { ArrayAlgorithm } from "../../array-algorithm";
+import Konva from "konva";
 
 export class QuickSort extends ArrayAlgorithm {
-  async run() {
+  constructor(layer: Konva.Layer) {
+    super(layer, ["Insert", "Init"]);
+  }
+
+  async algorithm() {
     await this.quickSort(0, this.data.length - 1);
   }
 
@@ -16,20 +21,24 @@ export class QuickSort extends ArrayAlgorithm {
 
   async partition(low: number, high: number) {
     let middle = Math.floor((low + high) / 2);
-    let pivot = this.data[middle].value;
+    await this.highlight(middle);
+    await this.swap(middle, high);
+    let pivot = this.data[high].value;
     let i = low - 1;
 
     for (let j = low; j < high; j++) {
-      await this.checkPause();
       await this.highlight(j);
       if (this.data[j].value < pivot) {
         i++;
         await this.swap(i, j);
+        await this.unhighlight(i);
       }
+
       await this.unhighlight(j);
     }
 
-    await this.swap(i + 1, high);
+    await this.swap(i + 1, high); // Move pivot to its correct place
+    await this.unhighlight(i + 1);
     return i + 1;
   }
 }
