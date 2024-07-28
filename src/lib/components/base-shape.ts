@@ -12,14 +12,14 @@ export abstract class BaseShape {
   };
 
   shape!: Konva.Shape;
-  protected textNode: Konva.Text;
+  protected text: Konva.Text;
   protected group: Konva.Group;
 
-  constructor(value: number) {
+  constructor(value: number, json: string = "") {
     this.group = new Konva.Group();
     this.shape = this.initShape(value);
     this.group.add(this.shape);
-    this.textNode = new Konva.Text({
+    this.text = new Konva.Text({
       ...BaseShape.BASE_SHAPE_CONFIG,
       verticalAlign: "middle",
       align: "center",
@@ -28,7 +28,14 @@ export abstract class BaseShape {
       width: BaseShape.BASE_UNIT,
       height: BaseShape.BASE_UNIT,
     });
-    this.group.add(this.textNode);
+    this.group.add(this.text);
+    if (json != "") {
+      const data = JSON.parse(json);
+      this.value = data.value;
+      this.shape.setAttrs(data.shapeAttrs);
+      this.text.setAttrs(data.textAttrs);
+      this.setPosition(data.position.x, data.position.y);
+    }
   }
 
   protected abstract initShape(value: number): Konva.Shape;
@@ -38,11 +45,11 @@ export abstract class BaseShape {
   }
 
   get value(): number {
-    return parseInt(this.textNode.text());
+    return parseInt(this.text.text());
   }
 
   set value(value: number) {
-    this.textNode.text(value.toString());
+    this.text.text(value.toString());
   }
 
   setAttrs(config: Konva.ShapeConfig) {
@@ -61,8 +68,16 @@ export abstract class BaseShape {
     return { x: this.group.position().x, y: this.group.position().y };
   }
 
+  toJSON(): string {
+    return JSON.stringify({
+      position: this.position,
+      value: this.value,
+      shapeAttrs: this.shape.getAttrs(),
+      textAttrs: this.text.getAttrs(),
+    });
+  }
+
   destroy() {
-    this.group.destroyChildren();
     this.group.destroy();
   }
 }
