@@ -5,6 +5,7 @@ import { SunIcon, MoonIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { toggleDarkMode } from "./Toggle";
 import { Text, Switch, Inset, Select } from "@radix-ui/themes";
 import { useLanguage } from "./LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isLightTheme, setIsLightTheme] = React.useState(
@@ -12,6 +13,7 @@ const Header: React.FC = () => {
   );
 
   const { language, setLanguage, t } = useLanguage();
+  const navigate = useNavigate();
 
   const handleThemeChange = () => {
     setIsLightTheme((prevTheme) => !prevTheme);
@@ -22,9 +24,17 @@ const Header: React.FC = () => {
     setLanguage(value as "en" | "vi");
   };
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   return (
     <Toolbar.Root className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-900 border-b border-gray-300 dark:border-gray-700">
-      <div className="flex items-center">
+      <div
+        className="flex items-center"
+        onClick={handleLogoClick}
+        style={{ cursor: "pointer" }}
+      >
         <Inset clip="padding-box" side="top" pb="current" className="ml-4">
           <img
             src="logo.png"

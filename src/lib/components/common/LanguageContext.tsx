@@ -14,6 +14,7 @@ const translations = {
     reset: "Reset",
     operation: "Operations",
     placeholder: "Search Algorithm",
+    noResults: "No results found",
     algorithms: {
       bubbleSort: "Bubble Sort",
       mergeSort: "Merge Sort",
@@ -76,6 +77,7 @@ const translations = {
     reset: "Làm lại",
     operation: "Hoạt động",
     placeholder: "Tìm kiếm thuật toán",
+    noResults: "Không tìm thấy kết quả",
     algorithms: {
       bubbleSort: "Sắp xếp nổi bọt",
       mergeSort: "Sắp xếp gộp",
