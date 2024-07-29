@@ -45,6 +45,12 @@ const translations = {
       init: "Initialize",
       search: "Search",
     },
+    controls: {
+      reset: "Reset",
+      speed: "Speed:",
+      operationsOpen: "Operations",
+      operationsClosed: "Operations",
+    },
     formLabels: {
       insert: "Insert: ",
       init: "Init value: ",
@@ -103,6 +109,12 @@ const translations = {
       update: "Cập nhật",
       init: "Khởi tạo",
       search: "Tìm kiếm",
+    },
+    controls: {
+      reset: "Đặt lại",
+      speed: "Tốc độ:",
+      operationsOpen: "Hoạt động",
+      operationsClosed: "Hoạt động",
     },
     formLabels: {
       insert: "Chèn: ",
