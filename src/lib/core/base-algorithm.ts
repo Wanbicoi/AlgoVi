@@ -1,5 +1,6 @@
 import Konva from "konva";
 import { OperationType } from "./base-operation";
+import { Progress } from "@radix-ui/themes";
 
 export type Status = "running" | "stop" | "not-started" | "loading" | "cancel";
 
@@ -14,7 +15,7 @@ export abstract class BaseAlgorithm {
   constructor(
     layer: Konva.Layer,
     operations: OperationType[],
-    speed: number = 1
+    speed: number = 1,
   ) {
     this._speed = speed;
     this._layer = layer;
@@ -28,11 +29,11 @@ export abstract class BaseAlgorithm {
     return this._operations;
   }
 
-  protected getDuration = () => 0.3 * this._speed;
+  protected getDuration = () => 0.3 / this._speed;
 
   protected sleep = async (
     func: Function,
-    ms = this.getDuration() + this._speed * 500,
+    ms = this.getDuration() + 500 / this._speed,
   ) => {
     switch (this._status) {
       //@ts-ignore
@@ -73,8 +74,8 @@ export abstract class BaseAlgorithm {
     return this._status == "running";
   }
   increaseSpeed(margin: number = 0.25) {
-    if (this._speed - margin > 0 && this._speed - margin < 10)
-      this._speed -= margin;
+    if (this._speed + margin > 0 && this._speed + margin < 10)
+      this._speed += margin;
   }
 
   /**
@@ -91,6 +92,10 @@ export abstract class BaseAlgorithm {
     if (this._status == "running" || this._status == "stop") {
       this._status = "cancel";
       this._step = 0;
+      //@ts-ignore
+      while (this._status != "not-started") {
+        await new Promise((r) => setTimeout(r, 100));
+      }
     }
   }
 
@@ -99,7 +104,11 @@ export abstract class BaseAlgorithm {
   }
 
   async goToPreviouStep() {
-    const step = this._step - 1;
+    await this.goToStep(this._step - 1);
+  }
+
+  async goToStep(step: number = 1) {
+    if (this._status == "loading" || this._status == "cancel") return;
     const value = localStorage.getItem(step.toString());
     if (!value) return;
 
