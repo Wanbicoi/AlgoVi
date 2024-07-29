@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-var */
+// AlgorithmDetails.tsx
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   TrackNextIcon,
   TrackPreviousIcon,
@@ -9,14 +9,15 @@ import {
 } from "@radix-ui/react-icons";
 import { Button, Flex, Slider, Text, Select, Popover } from "@radix-ui/themes";
 import Konva from "konva";
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { AlgorithmName, Operation, algorithms } from "./lib/core/algorithms";
 import Header from "./lib/components/common/header";
 import { useParams } from "react-router-dom";
 import { BaseAlgorithm } from "./lib/core/base-algorithm";
+import { useLanguage } from "./lib/components/common/LanguageContext";
 
 export default function AlgorithmDetails() {
   const { algorithmName } = useParams() as { algorithmName: AlgorithmName };
+  const { t } = useLanguage();
 
   const [isRunning, setIsRunning] = useState(false);
   const [showOperations, setShowOperations] = useState(false);
@@ -87,13 +88,13 @@ export default function AlgorithmDetails() {
             <Select.Trigger />
             <Select.Content>
               <Select.Group>
-                <Select.Item value="orange">Selection sort</Select.Item>
-                <Select.Item value="apple">Insertion sort</Select.Item>
+                <Select.Item value="orange">{t("selectAlgorithm")}</Select.Item>
+                <Select.Item value="apple">{t("selectAlgorithm")}</Select.Item>
               </Select.Group>
             </Select.Content>
           </Select.Root>
 
-          <Text className="text-black dark:text-white">Speed:</Text>
+          <Text className="text-black dark:text-white">{t("speed")}:</Text>
           <Slider defaultValue={[50]} max={100} step={1} className="w-36" />
           <TrackPreviousIcon
             className="text-black dark:text-white"
@@ -131,7 +132,7 @@ export default function AlgorithmDetails() {
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
             {isRunning ? <PauseIcon /> : <PlayIcon />}
-            {isRunning ? "Stop" : "Run"}
+            {isRunning ? t("stop") : t("run")}
           </Button>
 
           <Button
@@ -139,7 +140,7 @@ export default function AlgorithmDetails() {
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
           >
             <ResetIcon />
-            Reset
+            {t("reset")}
           </Button>
 
           <Popover.Root
@@ -152,8 +153,7 @@ export default function AlgorithmDetails() {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => setShowOperations(!showOperations)}
               >
-                {showOperations}
-                Operations
+                {showOperations ? t("operation") : t("operation")}
               </Button>
             </Popover.Trigger>
             <Popover.Content sideOffset={5}>

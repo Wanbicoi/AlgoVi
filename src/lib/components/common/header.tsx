@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from "react";
 import * as Toolbar from "@radix-ui/react-toolbar";
 import { SunIcon, MoonIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { toggleDarkMode } from "./Toggle";
-import { Text, Switch, Inset } from "@radix-ui/themes";
+import { Text, Switch, Inset, Select } from "@radix-ui/themes";
+import { useLanguage } from "./LanguageContext";
 
 const Header: React.FC = () => {
-  // State to keep track of the theme
-  const [isLightTheme, setIsLightTheme] = useState(
+  const [isLightTheme, setIsLightTheme] = React.useState(
     localStorage.getItem("theme") !== "dark"
   );
 
+  const { language, setLanguage, t } = useLanguage();
+
   const handleThemeChange = () => {
-    // Toggle theme
     setIsLightTheme((prevTheme) => !prevTheme);
     toggleDarkMode();
-    console.log("Theme change clicked");
   };
 
-  const handleLanguageChange = () => {
-    // Handle language change
-    console.log("Language change clicked");
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value as "en" | "vi");
   };
 
   return (
@@ -36,7 +36,7 @@ const Header: React.FC = () => {
               height: 40,
             }}
           />
-        </Inset>{" "}
+        </Inset>
         <Text size="7" className="font-majorMono">
           Algo-Vi
         </Text>
@@ -59,13 +59,24 @@ const Header: React.FC = () => {
 
         <Toolbar.Button asChild>
           <button
-            onClick={handleLanguageChange}
+            onClick={() =>
+              handleLanguageChange(language === "vi" ? "en" : "vi")
+            }
             className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ml-5"
             aria-label="Change language"
           >
             <GlobeIcon className="w-6 h-6 text-gray-700 dark:text-gray-300" />
           </button>
         </Toolbar.Button>
+        <Select.Root value={language} onValueChange={handleLanguageChange}>
+          <Select.Trigger className="p-2 rounded-md">
+            {language === "vi" ? "Tiếng Việt" : "English"}
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="vi">Tiếng Việt</Select.Item>
+            <Select.Item value="en">English</Select.Item>
+          </Select.Content>
+        </Select.Root>
       </div>
     </Toolbar.Root>
   );

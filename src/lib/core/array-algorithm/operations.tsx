@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import { ArrayAlgorithm } from ".";
@@ -5,12 +6,14 @@ import * as Form from "@radix-ui/react-form";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { ReactNode, useRef, useState } from "react";
 import { OperationType } from "../base-operation";
+import { useLanguage } from "../../components/common/LanguageContext";
 
 type Props = {
   algorithm: ArrayAlgorithm;
 };
 
-export default function ArrayOperaions({ algorithm }: Props) {
+export default function ArrayOperations({ algorithm }: Props) {
+  const { t } = useLanguage();
   const operations: Record<OperationType, ReactNode> = {
     Insert: <InitOperation algorithm={algorithm} key="init" />,
     Update: <UpdateOperation algorithm={algorithm} key="update" />,
@@ -28,6 +31,7 @@ type OperationProps = {
 
 function InsertOperation({ algorithm }: OperationProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const { t } = useLanguage();
   return (
     <Form.Root
       ref={formRef}
@@ -45,17 +49,21 @@ function InsertOperation({ algorithm }: OperationProps) {
           name="value"
           className="w-5/6 flex gap-2 items-center font-quicksand"
         >
-          <Form.Label className="w-1/4 font-bold">Insert: </Form.Label>
+          <Form.Label className="w-1/4 font-bold">
+            {t("formLabels.insert")}
+          </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4">
               <TextField.Root
                 required
                 type="number"
-                placeholder="value"
+                placeholder={t("formPlaceholders.insert")}
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
           </div>
         </Form.Field>
         <Form.Submit asChild className="w-1/6">
@@ -67,8 +75,10 @@ function InsertOperation({ algorithm }: OperationProps) {
     </Form.Root>
   );
 }
+
 function InitOperation({ algorithm }: OperationProps) {
   const [value, setValue] = useState<string>();
+  const { t } = useLanguage();
   return (
     <Form.Root
       onSubmit={(event) => {
@@ -86,9 +96,11 @@ function InitOperation({ algorithm }: OperationProps) {
           name="value"
           className="w-5/6 flex gap-2 items-center font-quicksand"
         >
-          <Form.Label className="w-1/4 font-bold">Init value: </Form.Label>
+          <Form.Label className="w-1/4 font-bold">
+            {t("formLabels.init")}
+          </Form.Label>
           <div className="flex-1">
-            <Form.Control asChild className="w-3/4 ">
+            <Form.Control asChild className="w-3/4">
               <TextField.Root
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
@@ -96,13 +108,15 @@ function InitOperation({ algorithm }: OperationProps) {
                 pattern="(\d+,)*\d+"
                 type="text"
                 size="2"
-                placeholder="3,4,1,6,2,..."
+                placeholder={t("formPlaceholders.init")}
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
             <Form.Message match="patternMismatch">
-              Not correct format
+              {t("formMessages.patternMismatch")}
             </Form.Message>
           </div>
           <Button
@@ -129,6 +143,7 @@ function InitOperation({ algorithm }: OperationProps) {
 }
 
 function UpdateOperation({ algorithm }: OperationProps) {
+  const { t } = useLanguage();
   return (
     <Form.Root
       onSubmit={(event) => {
@@ -140,26 +155,30 @@ function UpdateOperation({ algorithm }: OperationProps) {
     >
       <Flex gap="2">
         <Form.Field name="index" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Update: </Form.Label>
+          <Form.Label className="w-1/4">{t("formLabels.update")}</Form.Label>
           <div className="flex space-x-2 w-3/4">
             <Form.Control asChild>
               <TextField.Root
                 required
                 type="number"
                 size="2"
-                placeholder="index"
+                placeholder={t("formPlaceholders.index")}
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
             <Form.Control asChild>
               <TextField.Root
                 required
                 type="number"
                 size="2"
-                placeholder="value"
+                placeholder={t("formPlaceholders.value")}
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
           </div>
         </Form.Field>
         <Form.Submit asChild className="w-1/6">

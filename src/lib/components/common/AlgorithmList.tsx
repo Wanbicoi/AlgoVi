@@ -1,63 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Box, Card, Inset, Text, Strong } from "@radix-ui/themes";
+import { useLanguage } from "./LanguageContext";
 
 const algorithms = [
-  {
-    name: "Bubble Sort",
-    path: "bubble-sort",
-    description: "Simple comparison-based sorting algorithm.",
-  },
-  {
-    name: "Merge Sort",
-    path: "merge-sort",
-    description: "Divide and conquer algorithm that sorts by merging.",
-  },
-  {
-    name: "Quick Sort",
-    path: "quick-sort",
-    description: "Efficient comparison-based sorting algorithm using pivot.",
-  },
-  {
-    name: "Insertion Sort",
-    path: "insertion-sort",
-    description: "Builds the final sorted array one item at a time.",
-  },
-  {
-    name: "Selection Sort",
-    path: "selection-sort",
-    description: "Sorts by repeatedly finding the minimum element.",
-  },
-  {
-    name: "Heap Sort",
-    path: "heap-sort",
-    description:
-      "Comparison-based sorting algorithm that uses a heap data structure.",
-  },
-  {
-    name: "Radix Sort",
-    path: "radix-sort",
-    description: "Non-comparison-based sorting algorithm for integers.",
-  },
-  {
-    name: "Counting Sort",
-    path: "counting-sort",
-    description: "Non-comparison-based algorithm that counts occurrences.",
-  },
-  {
-    name: "Bucket Sort",
-    path: "bucket-sort",
-    description: "Distributes elements into buckets and sorts each bucket.",
-  },
-  {
-    name: "Shell Sort",
-    path: "shell-sort",
-    description: "Improves insertion sort by comparing elements at gaps.",
-  },
+  { name: "bubbleSort", path: "bubble-sort" },
+  { name: "mergeSort", path: "merge-sort" },
+  { name: "quickSort", path: "quick-sort" },
+  { name: "insertionSort", path: "insertion-sort" },
+  { name: "selectionSort", path: "selection-sort" },
+  { name: "heapSort", path: "heap-sort" },
+  { name: "radixSort", path: "radix-sort" },
+  { name: "countingSort", path: "counting-sort" },
+  { name: "bucketSort", path: "bucket-sort" },
+  { name: "shellSort", path: "shell-sort" },
 ];
 
 const AlgorithmList: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   // Hàm xử lý nhấp vào box
   const handleBoxClick = (path: string) => {
@@ -90,7 +51,7 @@ const AlgorithmList: React.FC = () => {
               />
             </Inset>
             <Text as="p" size="3" className="font-quicksand">
-              <Strong>{algo.name}</Strong>
+              <Strong>{t(`algorithms.${algo.name}`)}</Strong>
             </Text>
             <Text
               as="span"
@@ -105,7 +66,7 @@ const AlgorithmList: React.FC = () => {
               }}
               className="font-quicksand"
             >
-              {algo.description}
+              {t(`descriptions.${algo.name}`)}
             </Text>
           </Card>
         </Box>
