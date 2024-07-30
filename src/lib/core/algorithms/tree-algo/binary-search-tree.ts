@@ -4,6 +4,12 @@ import { BaseShape, Circle } from "../../../components";
 import { TreeNode } from "../../tree-algorithm/tree-node";
 
 export class BinarySearchTree extends TreeAlgorithm {
+  serialize(): string {
+    throw new Error("Method not implemented.");
+  }
+  deserialize(value: string): void {
+    throw new Error("Method not implemented.");
+  }
   constructor(layer: Konva.Layer) {
     super(layer, ["Insert", "Init", "Search", "Delete"]);
   }
@@ -21,8 +27,6 @@ export class BinarySearchTree extends TreeAlgorithm {
       shape.setPosition(x, y);
       return new TreeNode(value, shape);
     }
-
-    console.log("Inserting", value, "at depth", depth);
 
     if (value < root.data) {
       const leftChild = this.insertNode(
@@ -154,4 +158,6 @@ export class BinarySearchTree extends TreeAlgorithm {
   algorithm = async () => {
     // Implement the main algorithm to demonstrate BST operations
   };
+
+  
 }

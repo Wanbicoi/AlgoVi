@@ -7,6 +7,7 @@ import { HeapSort } from "./heap-sort";
 export * from "../operations/algorithm-operation";
 import { LinearSearch } from "./linear-search";
 import { InsertionSort } from "./insertion-sort";
+import { BinarySearchTree } from "../tree-algo/binary-search-tree";
 
 export type AlgorithmName =
   | "bubble-sort"
@@ -14,7 +15,8 @@ export type AlgorithmName =
   | "quick-sort"
   | "heap-sort"
   | "linear-search"
-  | "insertion-sort";
+  | "insertion-sort"
+  | "binary-search-tree";
 
 // declare global {
 //   interface Window {
@@ -30,4 +32,5 @@ export const algorithms = (
   "heap-sort": new HeapSort(layer),
   "linear-search": new LinearSearch(layer),
   "insertion-sort": new InsertionSort(layer),
+  "binary-search-tree": new BinarySearchTree(layer),
 });
