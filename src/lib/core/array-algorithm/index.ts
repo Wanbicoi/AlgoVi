@@ -62,11 +62,6 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm {
     ];
   }
 
-  updateElement(index: number, value: number) {
-    // just update the value of the element
-    this.data[index].value = value;
-  }
-
   async highlight(index: number) {
     await this.sleep(() => {
       return new Promise<void>((resolve) => {
@@ -97,12 +92,22 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm {
   }
 
   addData(value: number) {
+    // Determine the x position for the new shape
+    const spacing = 10;
+    const elementWidth = BaseShape.BASE_UNIT;
+    const lastElement = this.data[this.data.length - 1];
+    const x = lastElement
+      ? lastElement.position.x + elementWidth + spacing
+      : (this._layer.getCanvas().getWidth() - elementWidth) / 2;
+    const y = lastElement ? lastElement.position.y : 200;
+
     const newShape =
-      this.type == "circle" ? new Circle(value) : new Column(value);
-    newShape.setPosition(this.data.length * (BaseShape.BASE_UNIT + 10), 0);
+      this.type === "circle" ? new Circle(value) : new Column(value);
+    newShape.setPosition(x, y);
     newShape.addTo(this._layer);
     this.data.push(newShape);
   }
+  
   async initData(value: number[]) {
     await this.cancel();
     this.data.forEach((item) => item.destroy());
@@ -135,6 +140,4 @@ export abstract class ArrayAlgorithm extends BaseAlgorithm {
     }
     return;
   }
-
-  setAlgoName(name: string) {}
 }

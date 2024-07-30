@@ -23,7 +23,11 @@ import {
 } from "@radix-ui/themes";
 import Konva from "konva";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AlgorithmName, Operation, algorithms } from "./lib/core/algorithms";
+import {
+  AlgorithmName,
+  Operation,
+  algorithms,
+} from "./lib/core/algorithms/array-algo";
 import Header from "./lib/components/common/header";
 import { useParams } from "react-router-dom";
 import { BaseAlgorithm } from "./lib/core/base-algorithm";
