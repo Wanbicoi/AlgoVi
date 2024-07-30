@@ -4,11 +4,9 @@ import { BaseAlgorithm } from "../../base-algorithm";
 import { SelectionSort } from "./selection-sort";
 import { QuickSort } from "./quick-sort";
 import { HeapSort } from "./heap-sort";
-import { LinearSearch } from "./linear-search";
-import { BinarySearch } from "./binary-search";
 export * from "../operations/algorithm-operation";
-import { AVLTree } from "../tree-algo/avl-tree";
-import { BinarySearchTree } from "../tree-algo/binary-search-tree";
+import { LinearSearch } from "./linear-search";
+import { InsertionSort } from "./insertion-sort";
 
 export type AlgorithmName =
   | "bubble-sort"
@@ -16,9 +14,7 @@ export type AlgorithmName =
   | "quick-sort"
   | "heap-sort"
   | "linear-search"
-  | "binary-search"
-  | "avl-tree"
-  | "binary-search-tree";
+  | "insertion-sort";
 
 // declare global {
 //   interface Window {
@@ -33,7 +29,5 @@ export const algorithms = (
   "quick-sort": new QuickSort(layer),
   "heap-sort": new HeapSort(layer),
   "linear-search": new LinearSearch(layer),
-  "binary-search": new BinarySearch(layer),
-  "avl-tree": new AVLTree(layer),
-  "binary-search-tree": new BinarySearchTree(layer),
+  "insertion-sort": new InsertionSort(layer),
 });

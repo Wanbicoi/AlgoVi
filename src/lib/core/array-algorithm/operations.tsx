@@ -42,8 +42,11 @@ function InsertOperation({ algorithm }: OperationProps) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Insert: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">Insert: </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4">
               <TextField.Root
@@ -80,8 +83,11 @@ function InitOperation({ algorithm }: OperationProps) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Init value: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">Init value: </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4 ">
               <TextField.Root
@@ -170,12 +176,12 @@ function UpdateOperation({ algorithm }: OperationProps) {
 function SearchOperation({ algorithm }: OperationProps) {
   return (
     <Form.Root
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
         const data = Object.fromEntries(
           new FormData(event.currentTarget)
         ) as any;
-        algorithm.search(data.value);
+        await algorithm.search(Number(data.value));
       }}
     >
       <Flex gap="2">

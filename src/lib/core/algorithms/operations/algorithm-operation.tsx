@@ -1,8 +1,6 @@
 import { ArrayAlgorithm } from "../../array-algorithm";
 import ArrayOperations from "../../array-algorithm/operations";
 import { BaseAlgorithm } from "../../base-algorithm";
-import TreeOperations from "../../tree-algorithm/operations";
-import { TreeAlgorithm } from "../../tree-algorithm";
 import { AlgorithmName } from "../array-algo";
 
 type Props = {
@@ -21,12 +19,8 @@ export function Operation({ algorithmName, algorithm }: Props) {
     "linear-search": (
       <ArrayOperations algorithm={algorithm as ArrayAlgorithm} />
     ),
-    "binary-search": (
+    "insertion-sort": (
       <ArrayOperations algorithm={algorithm as ArrayAlgorithm} />
-    ),
-    "avl-tree": <TreeOperations algorithm={algorithm as TreeAlgorithm} />,
-    "binary-search-tree": (
-      <TreeOperations algorithm={algorithm as TreeAlgorithm} />
     ),
   };
   return operation[algorithmName];
