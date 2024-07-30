@@ -6,25 +6,44 @@ import {
   PauseIcon,
   PlayIcon,
   ResetIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+  CaretDownIcon,
+  CaretUpIcon,
+  DoubleArrowLeftIcon,
 } from "@radix-ui/react-icons";
-import { Button, Flex, Slider, Text, Select, Popover } from "@radix-ui/themes";
+import {
+  Button,
+  Flex,
+  Slider,
+  Text,
+  Select,
+  Popover,
+  IconButton,
+} from "@radix-ui/themes";
 import Konva from "konva";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  AlgorithmName,
-  Operation,
-  algorithms,
-} from "./lib/core/algorithms/array-algo";
+import { AlgorithmName, Operation, algorithms } from "./lib/core/algorithms";
 import Header from "./lib/components/common/header";
 import { useParams } from "react-router-dom";
 import { BaseAlgorithm } from "./lib/core/base-algorithm";
 
 export default function AlgorithmDetails() {
   const { algorithmName } = useParams() as { algorithmName: AlgorithmName };
-
-  const [isRunning, setIsRunning] = useState(false);
   const [showOperations, setShowOperations] = useState(false);
   const [algorithm, setAlgorithm] = useState<BaseAlgorithm>();
+
+  const [, forceUpdate] = useState({});
+
+  const handleStart = () => {
+    algorithm?.run();
+    forceUpdate({});
+  };
+
+  const handleStop = () => {
+    algorithm?.stop();
+    forceUpdate({});
+  };
 
   const handleWheel = useCallback((e: Konva.KonvaEventObject<WheelEvent>) => {
     e.evt.preventDefault();
@@ -67,6 +86,11 @@ export default function AlgorithmDetails() {
     stage.add(layer);
     const algo = algorithms(layer);
     setAlgorithm(algo[algorithmName]);
+
+    return () => {
+      stage.off("wheel", handleWheel);
+      stage.destroy();
+    };
   }, []);
 
   const handlePopoverOpenChange = (open: boolean) => {
@@ -87,64 +111,53 @@ export default function AlgorithmDetails() {
           gap="3"
           className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md items-center justify-center"
         >
-          <Select.Root defaultValue={algorithmName}>
-            <Select.Trigger />
-            <Select.Content>
-              <Select.Group>
-                <Select.Item value="orange">Selection sort</Select.Item>
-                <Select.Item value="apple">Insertion sort</Select.Item>
-              </Select.Group>
-            </Select.Content>
-          </Select.Root>
-
-          <Text className="text-black dark:text-white">Speed:</Text>
           <Slider defaultValue={[50]} max={100} step={1} className="w-36" />
-          <TrackPreviousIcon
-            className="text-black dark:text-white"
-            onClick={() => algorithm?.increaseSpeed(-0.25)}
-          />
-
-          {isRunning ? (
-            <PauseIcon
-              className="text-black dark:text-white"
-              onClick={() => {
-                algorithm?.stop();
-                setIsRunning(false);
-              }}
-            />
-          ) : (
-            <PlayIcon
-              className="text-black dark:text-white"
-              onClick={() => {
-                algorithm?.run();
-                setIsRunning(true);
-              }}
-            />
-          )}
-
-          <TrackNextIcon
-            className="text-black dark:text-white"
-            onClick={() => algorithm?.increaseSpeed()}
-          />
-          <Button
-            variant="solid"
+          <DoubleArrowLeftIcon
             onClick={() => {
-              algorithm?.run();
-              setIsRunning(!!algorithm?.isRunning);
+              algorithm?.goToPreviouStep();
+              forceUpdate({});
             }}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          >
-            {isRunning ? <PauseIcon /> : <PlayIcon />}
-            {isRunning ? "Stop" : "Run"}
-          </Button>
-
+          ></DoubleArrowLeftIcon>
+          {algorithm?.isRunning ? (
+            <IconButton radius="full" onClick={() => handleStop()}>
+              <PauseIcon className="dark:text-black text-white" />
+            </IconButton>
+          ) : (
+            <IconButton radius="full" onClick={() => handleStart()}>
+              <PlayIcon className="dark:text-black text-white" />
+            </IconButton>
+          )}
           <Button
             variant="soft"
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              algorithm?.reset();
+              forceUpdate({});
+            }}
           >
             <ResetIcon />
             Reset
           </Button>
+          <Text className="text-black dark:text-white">Speed: </Text>
+          <Text className="text-black dark:text-white">
+            x{algorithm?.speed.toFixed(2)}
+          </Text>
+          <div>
+            <CaretUpIcon
+              className="text-black dark:text-white"
+              onClick={() => {
+                algorithm?.increaseSpeed();
+                forceUpdate({});
+              }}
+            />
+            <CaretDownIcon
+              className="text-black dark:text-white"
+              onClick={() => {
+                algorithm?.increaseSpeed(-0.25);
+                forceUpdate({});
+              }}
+            />
+          </div>
 
           <Popover.Root
             open={showOperations}
