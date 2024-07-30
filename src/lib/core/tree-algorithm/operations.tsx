@@ -1,16 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TreeAlgorithm } from ".";
 import { OperationType } from "../base-operation";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { Button, Flex, TextField } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
-import { useState } from "react";
+import { useLanguage } from "../../components/common/LanguageContext";
 
 type Props = {
   algorithm: TreeAlgorithm;
 };
 
 export default function TreeOperations({ algorithm }: Props) {
+  const { t } = useLanguage();
   const operations: Record<OperationType, ReactNode> = {
     Insert: <InsertOperation algorithm={algorithm} key="insert" />,
     Delete: <DeleteOperation algorithm={algorithm} key="delete" />,
@@ -26,6 +29,7 @@ export default function TreeOperations({ algorithm }: Props) {
 
 function InsertOperation({ algorithm }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
+  const { t } = useLanguage();
   return (
     <Form.Root
       ref={formRef}
@@ -39,19 +43,26 @@ function InsertOperation({ algorithm }: Props) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Insert: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">
+            {t("operations.insert")}
+          </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4">
               <TextField.Root
                 required
                 type="number"
-                placeholder="value"
+                placeholder={t("formPlaceholders.value")}
                 min="0"
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
           </div>
         </Form.Field>
         <Form.Submit asChild className="w-1/6">
@@ -66,6 +77,7 @@ function InsertOperation({ algorithm }: Props) {
 
 function DeleteOperation({ algorithm }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
+  const { t } = useLanguage();
   return (
     <Form.Root
       ref={formRef}
@@ -79,18 +91,25 @@ function DeleteOperation({ algorithm }: Props) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Delete: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">
+            {t("formLabels.delete")}
+          </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4">
               <TextField.Root
                 required
                 type="number"
-                placeholder="value"
+                placeholder={t("formPlaceholders.value")}
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
           </div>
         </Form.Field>
         <Form.Submit asChild className="w-1/6">
@@ -105,6 +124,7 @@ function DeleteOperation({ algorithm }: Props) {
 
 function SearchOperation({ algorithm }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
+  const { t } = useLanguage();
   return (
     <Form.Root
       ref={formRef}
@@ -118,18 +138,25 @@ function SearchOperation({ algorithm }: Props) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Search: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">
+            {t("operations.search")}
+          </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4">
               <TextField.Root
                 required
                 type="number"
-                placeholder="value"
+                placeholder={t("formPlaceholders.value")}
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
           </div>
         </Form.Field>
         <Form.Submit asChild className="w-1/6">
@@ -144,6 +171,7 @@ function SearchOperation({ algorithm }: Props) {
 
 function InitOperation({ algorithm }: Props) {
   const [value, setValue] = useState<string>();
+  const { t } = useLanguage();
   return (
     <Form.Root
       onSubmit={(event) => {
@@ -157,8 +185,13 @@ function InitOperation({ algorithm }: Props) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Init value: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">
+            {t("formLabels.init")}
+          </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4 ">
               <TextField.Root
@@ -168,13 +201,15 @@ function InitOperation({ algorithm }: Props) {
                 pattern="(\d+,)*\d+"
                 type="text"
                 size="2"
-                placeholder="3,4,1,6,2,..."
+                placeholder={t("formPlaceholders.init")}
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
             <Form.Message match="patternMismatch">
-              Not correct format
+              {t("formMessages.patternMismatch")}
             </Form.Message>
           </div>
           <Button

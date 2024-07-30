@@ -155,7 +155,10 @@ function UpdateOperation({ algorithm }: OperationProps) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="index" className="w-5/6 flex gap-2 items-center">
+        <Form.Field
+          name="index"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
           <Form.Label className="w-1/4">{t("formLabels.update")}</Form.Label>
           <div className="flex space-x-2 w-3/4">
             <Form.Control asChild>
@@ -193,6 +196,7 @@ function UpdateOperation({ algorithm }: OperationProps) {
 }
 
 function SearchOperation({ algorithm }: OperationProps) {
+  const { t } = useLanguage();
   return (
     <Form.Root
       onSubmit={async (event) => {
@@ -204,18 +208,25 @@ function SearchOperation({ algorithm }: OperationProps) {
       }}
     >
       <Flex gap="2">
-        <Form.Field name="value" className="w-5/6 flex gap-2 items-center">
-          <Form.Label className="w-1/4">Search: </Form.Label>
+        <Form.Field
+          name="value"
+          className="w-5/6 flex gap-2 items-center font-quicksand"
+        >
+          <Form.Label className="w-1/4 font-bold">
+            {t("operations.search")}
+          </Form.Label>
           <div className="flex-1">
             <Form.Control asChild className="w-3/4">
               <TextField.Root
                 required
                 type="number"
                 size="2"
-                placeholder="value"
+                placeholder={t("formPlaceholders.value")}
               />
             </Form.Control>
-            <Form.Message match="valueMissing">Please enter value</Form.Message>
+            <Form.Message match="valueMissing">
+              {t("formMessages.valueMissing")}
+            </Form.Message>
           </div>
         </Form.Field>
         <Form.Submit asChild className="w-1/6">

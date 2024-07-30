@@ -17,28 +17,24 @@ const translations = {
     noResults: "No results found",
     algorithms: {
       bubbleSort: "Bubble Sort",
-      mergeSort: "Merge Sort",
       quickSort: "Quick Sort",
       insertionSort: "Insertion Sort",
       selectionSort: "Selection Sort",
       heapSort: "Heap Sort",
-      radixSort: "Radix Sort",
-      countingSort: "Counting Sort",
-      bucketSort: "Bucket Sort",
-      shellSort: "Shell Sort",
+      linearSearch: "Linear Search",
+      binarySearchTree: "Binary Search Tree",
     },
     descriptions: {
       bubbleSort: "Simple comparison-based sorting algorithm.",
-      mergeSort: "Divide and conquer algorithm that sorts by merging.",
       quickSort: "Efficient comparison-based sorting algorithm using pivot.",
       insertionSort: "Builds the final sorted array one item at a time.",
       selectionSort: "Sorts by repeatedly finding the minimum element.",
       heapSort:
         "Comparison-based sorting algorithm that uses a heap data structure.",
-      radixSort: "Non-comparison-based sorting algorithm for integers.",
-      countingSort: "Non-comparison-based algorithm that counts occurrences.",
-      bucketSort: "Distributes elements into buckets and sorts each bucket.",
-      shellSort: "Improves insertion sort by comparing elements at gaps.",
+      linearSearch:
+        "Sequentially checks each element until the target is found.",
+      binarySearchTree:
+        "Data structure that supports fast lookup, addition, and deletion of items.",
     },
     operations: {
       insert: "Insert",
@@ -56,6 +52,7 @@ const translations = {
       insert: "Insert: ",
       init: "Init value: ",
       update: "Update: ",
+      delete: "Delete: ",
     },
     formPlaceholders: {
       insert: "value",
@@ -80,31 +77,25 @@ const translations = {
     noResults: "Không tìm thấy kết quả",
     algorithms: {
       bubbleSort: "Sắp xếp nổi bọt",
-      mergeSort: "Sắp xếp gộp",
       quickSort: "Sắp xếp nhanh",
       insertionSort: "Sắp xếp chèn",
       selectionSort: "Sắp xếp chọn",
       heapSort: "Sắp xếp heap",
-      radixSort: "Sắp xếp cơ số",
-      countingSort: "Sắp xếp đếm",
-      bucketSort: "Sắp xếp theo xô",
-      shellSort: "Sắp xếp vỏ",
+      linearSearch: "Tìm kiếm tuần tự",
+      binarySearchTree: "Cây tìm kiếm nhị phân",
     },
     descriptions: {
       bubbleSort: "Thuật toán sắp xếp dựa trên so sánh đơn giản.",
-      mergeSort: "Thuật toán chia để trị sắp xếp bằng cách gộp.",
       quickSort:
         "Thuật toán sắp xếp dựa trên so sánh hiệu quả sử dụng điểm chốt.",
       insertionSort: "Xây dựng mảng đã sắp xếp cuối cùng từng mục một.",
       selectionSort: "Sắp xếp bằng cách tìm phần tử nhỏ nhất liên tục.",
       heapSort:
         "Thuật toán sắp xếp dựa trên so sánh sử dụng cấu trúc dữ liệu heap.",
-      radixSort: "Thuật toán sắp xếp không dựa trên so sánh cho số nguyên.",
-      countingSort:
-        "Thuật toán sắp xếp không dựa trên so sánh đếm số lần xuất hiện.",
-      bucketSort: "Phân phối các phần tử vào các xô và sắp xếp từng xô.",
-      shellSort:
-        "Cải thiện sắp xếp chèn bằng cách so sánh các phần tử tại khoảng cách.",
+      linearSearch:
+        "Kiểm tra từng phần tử một cách tuần tự cho đến khi tìm thấy mục tiêu.",
+      binarySearchTree:
+        "Cấu trúc dữ liệu hỗ trợ tra cứu, thêm, và xóa các mục một cách nhanh chóng.",
     },
     operations: {
       insert: "Chèn",
@@ -122,6 +113,7 @@ const translations = {
       insert: "Chèn: ",
       init: "Khởi tạo: ",
       update: "Cập nhật: ",
+      delete: "Xóa: ",
     },
     formPlaceholders: {
       insert: "giá trị",
