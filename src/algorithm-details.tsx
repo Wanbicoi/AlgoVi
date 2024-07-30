@@ -31,6 +31,7 @@ import {
 import Header from "./lib/components/common/header";
 import { useParams } from "react-router-dom";
 import { BaseAlgorithm } from "./lib/core/base-algorithm";
+import { useLanguage } from "./lib/components/common/LanguageContext";
 
 export default function AlgorithmDetails() {
   const { algorithmName } = useParams() as { algorithmName: AlgorithmName };
@@ -38,6 +39,7 @@ export default function AlgorithmDetails() {
   const [algorithm, setAlgorithm] = useState<BaseAlgorithm>();
 
   const [, forceUpdate] = useState({});
+  const { t } = useLanguage(); // Hook vào LanguageContext để lấy hàm t
 
   const handleStart = () => {
     algorithm?.run();
@@ -140,9 +142,11 @@ export default function AlgorithmDetails() {
             }}
           >
             <ResetIcon />
-            Reset
+            {t("controls.reset")}
           </Button>
-          <Text className="text-black dark:text-white">Speed: </Text>
+          <Text className="text-black dark:text-white">
+            {t("controls.speed")}
+          </Text>
           <Text className="text-black dark:text-white">
             x{algorithm?.speed.toFixed(2)}
           </Text>
@@ -173,8 +177,9 @@ export default function AlgorithmDetails() {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => setShowOperations(!showOperations)}
               >
-                {showOperations}
-                Operations
+                {showOperations
+                  ? t("controls.operationsOpen")
+                  : t("controls.operationsClosed")}
               </Button>
             </Popover.Trigger>
             <Popover.Content sideOffset={5}>
